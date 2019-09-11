@@ -1,22 +1,36 @@
-addEventListener("load", draw);
+function Ball(x, y, rad, vx, vy, ax, ay){
+  this.loc = new JSVector(x,y);
+  this.vel = new JSVector(vx,vy);
+  this.acc = new JSVector(ax,ay);
+  this.radius = rad;
 
-var canvas;
-var context;
+  this.render = function() {
 
+    context.clearRect(0,0, canvas.width, canvas.height);
 
-function setup(){
-  canvas = document.getElementById("cnv");
+    context.strokeStyle = 'red';
+    context.fillStyle = 'red';
+    context.beginPath();
 
-  canvas.width = 800;
-  canvas.height = 800;
+    context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+    context.stroke();
+    context.fill();
 
-  context = canvas.getContext("2d");
+  }
 
-  canvas.style.border = 'solid black 2px';
-  canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
-  
-}
+  this.update = function() {
 
-function draw(){
+    window.requestAnimationFrame(update);
+
+    this.loc.add(this.vel);
+    this.acc.add(this.acc);
+
+  }
+
+  this.run = function() {
+    this.update();
+    this.render();
+  }
+
 
 }
