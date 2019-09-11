@@ -1,0 +1,47 @@
+<html>
+  <head>
+      <script src = "JSVector.js"></script>
+      <script src = "Ball.js"></script>
+      <script src = "ballsketch.js"></script>
+  </head>
+    <script>
+      var v = new JSVector(4,3);
+
+      var v1 = new JSVector(5, 12);
+
+      var addVector = JSVector.addGetNew(v, v1);
+      var subVector = JSVector.subGetNew(v, v1);
+
+      var mult = v.copy().multiply(5);
+
+      var rotate = v.copy().rotate(2);
+
+      var setMag = v.copy().setMagnitude(25);
+      var setDir = v.copy().setDirection(5);
+
+      var norm = v.copy().normalize();
+
+      var limit = v.copy().limit(4);
+
+      console.log("Expected: [4,3] [5, 0.643]\n" +  v.toString());//works
+
+      console.log("Expected result of addVector: [9, 15] [17.492, 1.0303]\n" + addVector.toString());//works
+
+      console.log("Expected result of mult: [20, 15] [25, 0.643]\n" + mult.toString());//works
+
+      console.log("Expected result of angle between: 0.5325\n" + v1.angleBetween(v, v1));//works
+
+      console.log("Expected result of rotate: [-4.3925, 2.388]\n" + rotate.toString());
+
+      console.log("Expected result of setMag: [20,15] [25,0.643]\n" + setMag.toString());//works
+
+      console.log("Expected result of setDir: [r, 5]\n" + setDir.toString());//works
+
+      console.log("Expect [1, 0.643]\n" + norm.toString());//works
+
+      console.log("Expect [4, 0.643]\n" + limit.toString());//works
+
+    </script>
+
+
+</html>
