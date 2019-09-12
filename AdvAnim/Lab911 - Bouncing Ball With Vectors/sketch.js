@@ -28,23 +28,26 @@ function setup(){
 }
 
 function draw(){
+  for(let i = 0; i < balls.length; i++){
 
-  requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
 
-  context.clearRect(0,0, canvas.width, canvas.height);
+    context.clearRect(0,0, canvas.width, canvas.height);
 
-  context.strokeStyle = 'red';
-  context.fillStyle = 'red';
-  context.beginPath();
+    context.strokeStyle = 'red';
+    context.fillStyle = 'red';
+    context.beginPath();
 
-  context.arc(loc.x, loc.y, radius, 0, Math.PI*2, true);
-  context.stroke();
-  context.fill();
+    context.arc(loc.x, loc.y, radius, 0, Math.PI*2, true);
+    context.stroke();
+    context.fill();
 
-  loc.add(vel);
-  vel.add(acc);
+    loc.add(vel);
+    vel.add(acc);
 
-  checkEdges();
+    checkEdges();
+
+  }
 
 }
 
