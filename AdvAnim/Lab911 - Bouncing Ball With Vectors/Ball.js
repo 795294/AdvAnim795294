@@ -3,7 +3,7 @@ function Ball(x, y, rad, vx, vy, ax, ay){
   this.vel = new JSVector(vx,vy);
   this.acc = new JSVector(ax,ay);
   this.radius = rad;
-  
+
 
   this.render = function() {
 
@@ -44,6 +44,21 @@ function Ball(x, y, rad, vx, vy, ax, ay){
 
     if(this.loc.y + this.radius > canvas.height || this.loc.y - this.radius < 0){
       this.vel.y = -this.vel.y;
+    }
+  }
+
+  this.connect(v2){
+    var d = this.loc.dist(v2.loc);
+
+    if(d<200){
+      context.strokeStyle = 'rgb(255,0,0)';
+      context.fillStyle = 'rgb(255,0,0)';
+      context.beginPath();
+
+      context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+      context.stroke();
+      context.fill();
+
     }
   }
 

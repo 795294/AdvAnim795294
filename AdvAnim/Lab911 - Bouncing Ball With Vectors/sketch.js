@@ -40,6 +40,6 @@ function draw(){
 
 function loadBalls(n){
   for(let i = 0; i<n; i++){
-    balls.push(new Ball(Math.random()*800,Math.random()*800,30,Math.random()*4,2,0,0.05));
+    balls.push(new Ball(Math.random()*(770-30)+30,Math.random()*(770-30)+30,30,Math.random()*4,2,0,0.05));
   }
 }
