@@ -18,7 +18,7 @@ function setup(){
 
   draw();
 
-  loadBalls(50);
+  loadBalls(2);
 
 
 
@@ -30,8 +30,15 @@ function draw(){
   context.clearRect(0,0, canvas.width, canvas.height);
 
   for(let i = 0; i<balls.length;i++){
-
     balls[i].run();
+
+    for(let j = 0; j < balls.length; j++){
+      if(balls[i] != balls[j]){
+        balls[i].connect(balls[j]);
+      }
+    }
+
+
   }
 
 
@@ -40,6 +47,6 @@ function draw(){
 
 function loadBalls(n){
   for(let i = 0; i<n; i++){
-    balls.push(new Ball(Math.random()*(770-30)+30,Math.random()*(770-30)+30,30,Math.random()*4,2,0,0.05));
+    balls.push(new Ball(Math.random()*(770-30)+30,Math.random()*(770-30)+30,Math.random()*30,(Math.random()*4)-2,(Math.random()*4)-2,(Math.random()*0.5)-0.25,(Math.random()*0.5)-0.25));
   }
 }
