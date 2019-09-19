@@ -2,37 +2,50 @@ function Ball(x, y, rad, vx, vy, ax, ay){
   this.loc = new JSVector(x,y);
   this.vel = new JSVector(vx,vy);
   this.acc = new JSVector(ax,ay);
+  this.repulsion =
   this.radius = rad;
   this.mass = this.radius*10;
 
 
   this.render = function() {
 
+    if(this === repulsionBall){
+      context.strokeStyle = 'rgb(255,0,0)';
+      context.fillStyle = 'rgb(255,0,0)';
+      context.beginPath();
 
+      context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+      context.stroke();
+      context.fill();
 
-    context.strokeStyle = 'rgb(255,0,0)';
-    context.fillStyle = 'rgb(255,0,0)';
-    context.beginPath();
+    } else if(this === attractionBall){
+      context.strokeStyle = 'rgb(0,255,0)';
+      context.fillStyle = 'rgb(0,255,0)';
+      context.beginPath();
 
-    context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
-    context.stroke();
-    context.fill();
+      context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+      context.stroke();
+      context.fill();
+
+    } else {
+      context.strokeStyle = 'rgb(0,0,255)';
+      context.fillStyle = 'rgb(0,0,255)';
+      context.beginPath();
+
+      context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+      context.stroke();
+      context.fill();
+    }
 
 
   }
 
   this.update = function() {
 
-
-
     this.loc.add(this.vel);
     this.vel.add(this.acc);
 
-    if(this.isColliding(v2)){
-      this.vel = ((this.mass-v2.mass)/(this.mass+v2.mass))*this.vel + ((2*v2.mass)/(this.mass+v2.mass))*v2.vel;
-
-      v2.vel = (2*this.mass)/(this.mass+v2.mass))*this.vel + ((2*v2.mass)/(this.mass+v2.mass))*v2.vel;
-    }
+    this.vel.limit(4);
 
   }
 
@@ -68,14 +81,32 @@ function Ball(x, y, rad, vx, vy, ax, ay){
     }
   }
 
-  this.isColliding = function(v2){
+  this.attract = function(v2){
     var d = this.loc.distance(v2.loc);
 
-    if(d<this.radius*2){
-      return true;
+    if(d<200){
+
+      var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
+      attractionForce.normalize();
+      attractionForce.multiply(0.5);
+      this.vel.add(attractionForce);
+
     }
+
 
   }
 
+  this.repel = function(v2){
+    var d = this.loc.distance(v2.loc);
 
+    if(d<500){
+
+      var repulsuionForce = JSVector.addGetNew(v2.loc, this.loc);
+      repulsuionForce.normalize();
+      repulsuionForce.multiply(0.5);
+      this.vel.add(repulsuionForce);
+
+    }
+
+  }
 }
