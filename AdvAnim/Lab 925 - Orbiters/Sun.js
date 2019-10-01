@@ -37,7 +37,6 @@ function Sun(x, y, rad, hue, vx, vy){
 
   }
 
-
   this.checkEdges = function() {
       if(this.loc.x + this.radius > canvas.width || this.loc.x - this.radius < 0){
         this.vel.x = -this.vel.x;
