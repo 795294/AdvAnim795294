@@ -6,7 +6,7 @@ var hue  = 0;
 
 let planets  = [];
 
-var sun;
+var suns = [];
 
 function setup(){
   canvas = document.getElementById("cnv");
@@ -19,9 +19,9 @@ function setup(){
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
-  loadPlanets(300);
+  loadPlanets(30);
 
-  sun = new Planet(400, 400, 70, 0, 0, (Math.random()*4)-2, (Math.random()*4)-2);
+  loadSuns(2);
 
   draw();
 
@@ -32,15 +32,18 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  sun.run();
+  for(let i = 0; i<suns.length; i++){
 
+    for(let j = 0; j<planets.length;j++){
+      planets[j].run();
+      planets[j].orbit(suns[i]);
+      planets[j].connect(suns[i]);
 
-  for(let i = 0; i<planets.length;i++){
-    planets[i].run();
-    planets[i].orbit(sun);
-    planets[i].connect(sun);
+      }
 
+      suns[i].run();
     }
+
 
   }
 
@@ -49,7 +52,13 @@ function draw(){
 function loadPlanets(n){
   for(let i = 0; i<n; i++){
 
-    planets.push(new Planet(Math.random()*(770-30)+30,Math.random()*(770-30)+30,Math.random()*30, Math.random()*400, Math.random()*360, (Math.random()*4)-2, (Math.random()*4)-2));
+    planets.push(new Planet(Math.random()*(770-30)+30,Math.random()*(770-30)+30,(Math.random()*30)+15, (Math.random()*200)+100, Math.random()*360, (Math.random()*4)-2, (Math.random()*4)-2));
 
+  }
+}
+
+function loadSuns(n){
+  for(let i = 0; i<n; i++){
+    suns.push(new Sun(400, 400, 70, Math.random()*360, (Math.random()*4)-2, (Math.random()*4)-2));
   }
 }

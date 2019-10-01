@@ -6,7 +6,8 @@ function Planet(x, y, rad, or, hue, vx, vy){
   this.orbitRadius = or;
   this.hue = hue;
   this.angle = Math.random()*100;
-  this.aVel = Math.random()*100;
+  this.aVel = Math.random()*0.01;
+  this.orbitRadiusChange = 1;
 
   this.render = function() {
 
@@ -16,15 +17,6 @@ function Planet(x, y, rad, or, hue, vx, vy){
         hue = 0;
       }
 
-      if(this === sun){
-        context.strokeStyle = 'hsl('+ this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')'
-        context.fillStyle = 'hsl('+ this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')'
-        context.beginPath();
-
-        context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
-        context.stroke();
-        context.fill();
-      } else {
         context.strokeStyle = 'hsl('+ -this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')'
         context.fillStyle = 'hsl('+ -this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')'
         context.beginPath();
@@ -32,15 +24,12 @@ function Planet(x, y, rad, or, hue, vx, vy){
         context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
         context.stroke();
         context.fill();
-      }
 
   }
 
   this.update = function() {
 
-    if(this === sun){
-      this.loc.add(this.vel);
-    }
+    this.loc.add(this.vel);
 
     this.angle += this.aVel;
 
@@ -50,7 +39,7 @@ function Planet(x, y, rad, or, hue, vx, vy){
 
     this.update();
     this.render();
-    this.checkEdges();
+    this.changeOrbitRadius();
 
   }
 
@@ -62,18 +51,6 @@ function Planet(x, y, rad, or, hue, vx, vy){
 
   }
 
-  this.checkEdges = function() {
-    if(this === sun){
-      if(this.loc.x + this.radius > canvas.width || this.loc.x - this.radius < 0){
-        this.vel.x = -this.vel.x;
-      }
-
-      if(this.loc.y + this.radius > canvas.height || this.loc.y - this.radius < 0){
-        this.vel.y = -this.vel.y;
-      }
-    }
-  }
-
   this.connect = function(v2){
 
       context.lineWidth = 2;
@@ -83,4 +60,13 @@ function Planet(x, y, rad, or, hue, vx, vy){
       context.stroke();
 
   }
+
+  this.changeOrbitRadius = function(){
+    if(this.orbitRadius > 300){
+      this.orbitRadiusChange *= -1;
+    }else if(this.orbitRadius < 100){
+      this.orbitRadiusChange *= -1;
+    }
+    this.orbitRadius += this.orbitRadiusChange;
+    }
 }
