@@ -19,7 +19,7 @@ function setup(){
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
-  loadSuns(3, 30);
+  loadSuns(3, 5);
 
   draw();
 
@@ -33,7 +33,8 @@ function draw(){
   for(let i = 0; i<suns.length; i++){
 
     for(let j = 0; j<planets.length;j++){
-      planets[j].run(suns[i]);
+      planets[j].run();
+      planets[j].orbit(suns[i]);
       planets[j].connect(suns[i]);
 
       }
@@ -51,7 +52,7 @@ function loadSuns(numSuns, numPlanetsPerSun){
 
     for(let j = 0; j<numPlanetsPerSun; j++){
 
-      planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*30)+15, Math.random()*200, Math.random()*360, (Math.random()*4)-2, (Math.random()*4)-2));
+      planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*30)+15, (Math.random()*200)+100, Math.random()*360));
 
     }
   }
