@@ -54,6 +54,9 @@ function Planet(x, y, rad, or, hue, vx, vy){
     var d = this.loc.distance(v2.loc);
 
     if(d<=400){
+
+      context.beginPath();
+
       context.lineWidth = 2;
       context.strokeStyle =  'hsl('+ -this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')';
       context.moveTo(this.loc.x, this.loc.y);

@@ -21,14 +21,14 @@ function Ship(x, y, vx, vy, ax, ay, hue){
 
       context.translate(this.loc.x, this.loc.y);
       this.angle = this.vel.getDirection();
-      context.rotate(this.angle);
+      context.rotate(this.angle - Math.PI/2);
       context.beginPath();
-      context.moveTo(-3, -4);
-      context.lineTo(0,5);
-      context.moveTo(0,5);
-      context.lineTo(3,-4);
-      context.moveTo(3,-4);
-      context.lineTo(-3,-4);
+      context.moveTo(-9, -12);
+      context.lineTo(0,15);
+      context.moveTo(0,15);
+      context.lineTo(9,-12);
+      context.moveTo(9,-12);
+      context.lineTo(-9,-12);
 
       context.restore();
 
