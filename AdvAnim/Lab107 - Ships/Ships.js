@@ -7,7 +7,7 @@ function Ship(x, y, vx, vy, ax, ay, hue){
 
   this.render = function() {
 
-      this.hue += 0.1;
+      this.hue ++;
 
       if(this.hue>360){
         hue = 0;
@@ -37,13 +37,23 @@ function Ship(x, y, vx, vy, ax, ay, hue){
   this.update = function() {
 
       this.loc.add(this.vel);
-      this.vel.add(this.acc);
+
+      this.vel.limit(4);
   }
 
   this.run = function() {
 
-    this.update();
     this.render();
+    this.update();
+
+  }
+
+  this.attract = function(v2){
+
+      var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
+      attractionForce.normalize();
+      attractionForce.multiply(0.5);
+      this.vel.add(attractionForce);
 
   }
 }

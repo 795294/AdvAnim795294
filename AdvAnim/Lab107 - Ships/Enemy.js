@@ -6,7 +6,7 @@ function Enemy(x, y, rad, hue){
 
   this.render = function() {
 
-      this.hue += 0.1;
+      this.hue ++;
 
       if(this.hue>360){
         hue = 0;
@@ -21,19 +21,17 @@ function Enemy(x, y, rad, hue){
 
   }
 
-  this.update = function() {
-    if(this.isColliding()){
-      this.loc.x = Math.random()*canvas.width;
-      this.loc.y = Math.random()*canvas.height;
-    }
-
-  }
-
   this.run = function() {
     this.render();
   }
 
-  this.attract = function(ships){
-    var d = 
+  this.update = function(v2){
+    var d = this.loc.distance(v2.loc);
+
+    if(d<this.radius){
+      this.loc.x = Math.random()*window.innerWidth;
+      this.loc.y = Math.random()*window.innerHeight;
+    }
   }
+
 }

@@ -25,20 +25,25 @@ function setup(){
 }
 
 function draw(){
+
   requestAnimationFrame(draw);
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  for(let i = 0; i<ships.length; i++){
-      ships[i].run();
+  for(let i = 0; i<enemies.length;i++){
+    enemies[i].run();
 
-      for(let j = 0; j<enemies.length; j++){
-          enemies[j].run(ships[i]);
-          enemies[j].isColliding(ships[i]);
-        }
+    for(let j = 0; j<ships.length; j++){
+      ships[j].run();
+
+      ships[j].attract(enemies[i]);
+
+      enemies[i].update(ships[j]);
     }
 
   }
+
+}
 
 
 function loadShips(n){
