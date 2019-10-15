@@ -8,15 +8,15 @@ var particle;
 function setup(){
   canvas = document.getElementById("cnv");
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = 800;
+  canvas.height = 800;
 
   context = canvas.getContext("2d");
 
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
-  particle = new Particle(400, 400, 0, 0, 0.05, 0.05);
+  particle = new Particle(400, 400, 0, 0, 0, 0.01, 6);
 
   draw();
 

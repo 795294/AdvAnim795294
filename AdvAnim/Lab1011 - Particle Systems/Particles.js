@@ -1,14 +1,15 @@
-function Particle(x, y, vx, vy, ax, ay){
+function Particle(x, y, vx, vy, ax, ay, rad){
   this.loc  = new JSVector(x,y);
   this.vel  = new JSVector(vx,vy);
   this.acc  = new JSVector(ax,ay);
+  this.radius = rad;
 
-  this.lifespan = 255;
+  this.lifespan = 1;
 
 this.render = function(){
 
-  context.strokeStyle = 'rgb('+this.lifespan+','+this.lifespan+','+this.lifespan+')';
-  context.fillStyle = 'rgb('+this.lifespan+','+this.lifespan+','+this.lifespan+')';
+  context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
+  context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';;
   context.beginPath();
 
   context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
@@ -22,13 +23,14 @@ this.update = function(){
   this.loc.add(this.vel);
   this.vel.add(this.acc);
 
-  this.lifespan -= 2;
+  this.lifespan -= 0.003;
 
 }
 
 this.run = function(){
-  this.update();
   this.render();
+  this.update();
+
 }
 
 this.isDead = function() {
