@@ -3,7 +3,7 @@ addEventListener("load", setup);
 var canvas;
 var context;
 
-var particle;
+let particles = [];
 
 function setup(){
   canvas = document.getElementById("cnv");
@@ -16,7 +16,7 @@ function setup(){
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
-  particle = new Particle(400, 400, 0, 0, 0, 0.01, 6);
+  loadParticleSystems(3);
 
   draw();
 
@@ -27,11 +27,15 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  particle.run();
-
-  if(particle.isDead()){
-    console.log('dead');
+  for(var i = 0; i<particles.length; i++){
+    particles[i].run();
   }
 
 
+}
+
+function loadParticleSystems(n){
+  for(var i = 0; i<n; i++){
+    particles.push(new ParticleSystem(400,400,0,0,0,0,30,"green"));
+  }
 }

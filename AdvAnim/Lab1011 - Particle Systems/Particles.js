@@ -1,10 +1,11 @@
-function Particle(x, y, vx, vy, ax, ay, rad){
+function Particle(x, y, vx, vy, ax, ay, rad, clr){
   this.loc  = new JSVector(x,y);
   this.vel  = new JSVector(vx,vy);
   this.acc  = new JSVector(ax,ay);
   this.radius = rad;
+  this.color = clr;
 
-  this.lifespan = 1;
+  this.lifespan = Math.random()*1;
 
 this.render = function(){
 
@@ -36,6 +37,7 @@ this.run = function(){
 this.isDead = function() {
   if(this.lifespan < 0){
     return true;
+
   } else {
     return false;
   }
