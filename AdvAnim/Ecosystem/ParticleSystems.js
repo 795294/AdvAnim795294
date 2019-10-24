@@ -14,7 +14,7 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
 
     this.frameCount++;
 
-    if(this.frameCount%20 === 0){
+    if(this.frameCount%5 === 0){
         this.loadParticles(1);
     }
 

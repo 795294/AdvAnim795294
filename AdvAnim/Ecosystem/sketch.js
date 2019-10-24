@@ -1,17 +1,20 @@
 addEventListener("load", setup);
+addEventListener("collide", newPS);
 
 var canvas;
 var context;
 var hue  = 0;
 
 let planets  = [];
-
+let particleSystems = [];
 let suns = [];
 
 let particles = [];
 
 let ships  = [];
 let enemies = [];
+
+var collisionEvent;
 
 function setup(){
   canvas = document.getElementById("cnv");
@@ -24,13 +27,25 @@ function setup(){
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
-  loadSuns(3, 5);
 
-  loadParticleSystems(3);
+
+  loadSuns(1,5);
 
   loadShips(5);
 
+  //loadParticleSystems(1);
+
   draw();
+
+}
+
+function newPS(){
+  // x, y, vx, vy, ax, ay, rad, clr)
+
+    particleSystems.push(new ParticleSystem(400, 400, 0, 0, 0, 0, 10, "green"));
+
+    console.log("event");
+
 
 }
 
@@ -49,24 +64,20 @@ function draw(){
       }
 
     for(let j = 0; j<ships.length; j++){
+
       ships[j].run();
 
       ships[j].attract(suns[i]);
 
-      suns[i].update(ships[j]);
+      suns[i].checkCollision(ships[j]);
 
-      if(suns[i].isColliding(ships[j])){
-
-        for(let k = 0; k<particles.length; k++){
-          particles[k].run();
-
-          console.log("particle");
-        }
-
+      for(let k = 0; k < particleSystems.length; k++){
+        particleSystems[k].run();
       }
+
     }
 
-      suns[i].run();
+    suns[i].run();
   }
 
 
@@ -85,11 +96,6 @@ function loadSuns(numSuns, numPlanetsPerSun){
   }
 }
 
-function loadParticleSystems(n){
-  for(let i = 0; i<n; i++){
-    particles.push(new ParticleSystem(400,400,0,0,0,0,30,"green"));
-  }
-}
 
 function loadShips(n){
   for(let i = 0; i<n; i++){

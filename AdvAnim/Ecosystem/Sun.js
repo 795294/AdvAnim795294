@@ -4,6 +4,8 @@ function Sun(x, y, rad, hue, vx, vy){
   this.radius = rad;
   this.hue = hue;
   this.aVel = Math.random()*100;
+  //this.particleSystem = new ParticleSystem(this.loc.x,this.loc.y,0,0,0,0,30,"green");
+  this.collideLoc = new JSVector(0,0);
 
   this.render = function() {
 
@@ -23,24 +25,36 @@ function Sun(x, y, rad, hue, vx, vy){
 
   }
 
-  this.update = function(v2) {
+  this.update = function(/*v2*/) {
 
       this.loc.add(this.vel);
 
       this.vel.limit(2);
 
-      if(this.isColliding(v2)){
-        this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
-        this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
 
-        this.vel.x = (Math.random()*1)-0.5;
-        this.vel.y = (Math.random()*1)-0.5;
-      }
+
+      // if(this.isColliding(v2)){
+      //
+      //   collisionEvent = new Event("collide");
+      //
+      //
+      //   this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
+      //   this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
+      //
+      //   this.vel.x = (Math.random()*1)-0.5;
+      //   this.vel.y = (Math.random()*1)-0.5;
+      //
+      // }
+
+
 
   }
 
   this.run = function() {
 
+    //this.particleSystem.run();
+
+    this.update();
     this.render();
     this.checkEdges();
 
@@ -56,15 +70,23 @@ function Sun(x, y, rad, hue, vx, vy){
       }
   }
 
-  this.isColliding = function(v2){
+  this.checkCollision = function(v2){
     var d = this.loc.distance(v2.loc);
 
     if(d<this.radius){
 
-      return true;
-    } else {
-      return false;
-    }
+      collisionEvent = new Event("collide");
+
+
+      this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
+      this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
+
+      this.vel.x = (Math.random()*1)-0.5;
+      this.vel.y = (Math.random()*1)-0.5;
+
   }
+
+
+}
 
 }
