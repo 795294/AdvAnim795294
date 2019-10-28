@@ -1,3 +1,5 @@
+
+
 function Sun(x, y, rad, hue, vx, vy){
   this.vel = new JSVector(vx, vy);
   this.loc = new JSVector(x,y);
@@ -75,14 +77,16 @@ function Sun(x, y, rad, hue, vx, vy){
 
     if(d<this.radius){
 
-      collisionEvent = new Event("collide");
-
 
       this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
       this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
 
       this.vel.x = (Math.random()*1)-0.5;
       this.vel.y = (Math.random()*1)-0.5;
+
+      console.log("collide");
+
+      collisionEvent = new Event("collide");
 
   }
 

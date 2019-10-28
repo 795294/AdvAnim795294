@@ -29,23 +29,11 @@ function setup(){
 
 
 
-  loadSuns(1,5);
+  loadSuns(2,5);
 
-  loadShips(5);
-
-  //loadParticleSystems(1);
+  loadShips(7);
 
   draw();
-
-}
-
-function newPS(){
-  // x, y, vx, vy, ax, ay, rad, clr)
-
-    particleSystems.push(new ParticleSystem(400, 400, 0, 0, 0, 0, 10, "green"));
-
-    console.log("event");
-
 
 }
 
@@ -53,6 +41,10 @@ function draw(){
   requestAnimationFrame(draw);
 
   context.clearRect(0,0, canvas.width, canvas.height);
+
+  for(let k = 0; k < particleSystems.length; k++){
+    particleSystems[k].run();
+  }
 
   for(let i = 0; i<suns.length; i++){
 
@@ -71,10 +63,6 @@ function draw(){
 
       suns[i].checkCollision(ships[j]);
 
-      for(let k = 0; k < particleSystems.length; k++){
-        particleSystems[k].run();
-      }
-
     }
 
     suns[i].run();
@@ -82,6 +70,15 @@ function draw(){
 
 
   }
+
+
+function newPS(collisionEvent){
+  // function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr)
+    particleSystems.push(new ParticleSystem(400, 400, 0, 0, 0, 0, 10, "green"));
+    console.log("event");
+
+
+}
 
 
 function loadSuns(numSuns, numPlanetsPerSun){
