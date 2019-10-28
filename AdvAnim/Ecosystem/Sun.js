@@ -7,7 +7,9 @@ function Sun(x, y, rad, hue, vx, vy){
   this.hue = hue;
   this.aVel = Math.random()*100;
   //this.particleSystem = new ParticleSystem(this.loc.x,this.loc.y,0,0,0,0,30,"green");
-  this.collideLoc = new JSVector(0,0);
+  this.collison = false;
+
+
 
   this.render = function() {
 
@@ -88,6 +90,10 @@ function Sun(x, y, rad, hue, vx, vy){
 
       collisionEvent = new Event("collide");
 
+      this.collison = true;
+
+  } else {
+    this.collision = false;
   }
 
 

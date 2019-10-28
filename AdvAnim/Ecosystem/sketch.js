@@ -63,6 +63,9 @@ function draw(){
 
       suns[i].checkCollision(ships[j]);
 
+      if(suns[i].collision === true){
+        newPS();
+      }
     }
 
     suns[i].run();
