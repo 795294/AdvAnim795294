@@ -1,5 +1,5 @@
 addEventListener("load", setup);
-addEventListener("collide", newPS);
+window.addEventListener("collide", newPS);
 
 var canvas;
 var context;
@@ -9,12 +9,13 @@ let planets  = [];
 let particleSystems = [];
 let suns = [];
 
-let particles = [];
-
 let ships  = [];
 let enemies = [];
 
-var collisionEvent;
+//var collisionEvent;
+
+var collideLocx;
+var collideLocy;
 
 function setup(){
   canvas = document.getElementById("cnv");
@@ -25,7 +26,7 @@ function setup(){
   context = canvas.getContext("2d");
 
   canvas.style.border = 'solid black 2px';
-  canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
+  canvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
 
 
@@ -42,8 +43,14 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  for(let k = 0; k < particleSystems.length; k++){
-    particleSystems[k].run();
+  for(let i = 0; i < particleSystems.length; i++){
+
+    if (!particleSystems[i].isDead()) {
+      particleSystems[i].run();
+
+    } else {
+      particleSystems.splice(i, 1);
+    }
   }
 
   for(let i = 0; i<suns.length; i++){
@@ -63,9 +70,6 @@ function draw(){
 
       suns[i].checkCollision(ships[j]);
 
-      if(suns[i].collision === true){
-        newPS();
-      }
     }
 
     suns[i].run();
@@ -76,8 +80,8 @@ function draw(){
 
 
 function newPS(collisionEvent){
-  // function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr)
-    particleSystems.push(new ParticleSystem(400, 400, 0, 0, 0, 0, 10, "green"));
+
+    particleSystems.push(new ParticleSystem(collideLocx, collideLocy, 0, 0, 0, 0, 10, "green"));
     console.log("event");
 
 

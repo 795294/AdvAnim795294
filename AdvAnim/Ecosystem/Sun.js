@@ -6,7 +6,6 @@ function Sun(x, y, rad, hue, vx, vy){
   this.radius = rad;
   this.hue = hue;
   this.aVel = Math.random()*100;
-  //this.particleSystem = new ParticleSystem(this.loc.x,this.loc.y,0,0,0,0,30,"green");
   this.collison = false;
 
 
@@ -29,7 +28,7 @@ function Sun(x, y, rad, hue, vx, vy){
 
   }
 
-  this.update = function(/*v2*/) {
+  this.update = function() {
 
       this.loc.add(this.vel);
 
@@ -37,26 +36,9 @@ function Sun(x, y, rad, hue, vx, vy){
 
 
 
-      // if(this.isColliding(v2)){
-      //
-      //   collisionEvent = new Event("collide");
-      //
-      //
-      //   this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
-      //   this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
-      //
-      //   this.vel.x = (Math.random()*1)-0.5;
-      //   this.vel.y = (Math.random()*1)-0.5;
-      //
-      // }
-
-
-
   }
 
   this.run = function() {
-
-    //this.particleSystem.run();
 
     this.update();
     this.render();
@@ -74,11 +56,13 @@ function Sun(x, y, rad, hue, vx, vy){
       }
   }
 
-  this.checkCollision = function(v2){
+  this.checkCollision = function(v2){ //  v2 is a ship object
     var d = this.loc.distance(v2.loc);
 
     if(d<this.radius){
 
+      collideLocx = this.loc.x;
+      collideLocy = this.loc.y;
 
       this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
       this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
@@ -86,14 +70,10 @@ function Sun(x, y, rad, hue, vx, vy){
       this.vel.x = (Math.random()*1)-0.5;
       this.vel.y = (Math.random()*1)-0.5;
 
-      console.log("collide");
+      //
+      var collisionEvent = new Event("collide");
+      window.dispatchEvent(collisionEvent);
 
-      collisionEvent = new Event("collide");
-
-      this.collison = true;
-
-  } else {
-    this.collision = false;
   }
 
 

@@ -7,16 +7,14 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
   this.acc = new JSVector(ax, ay);
   this.frameCount = 0;
 
+  this.lifespan = Math.random()*50;
+
 
   this.update = function() {
     this.vel.add(this.acc);
     this.loc.add(this.vel);
 
-    this.frameCount++;
-
-    if(this.frameCount%5 === 0){
-        this.loadParticles(1);
-    }
+    this.loadParticles(this.lifespan%2);
 
     for(var i = this.pArray.length-1; i >= 0; i--) {
       if (!this.pArray[i].isDead()) {
@@ -26,6 +24,8 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
         this.pArray.splice(i, 1);
       }
     }
+
+    this.lifespan -= 1;
   }
 
   this.run = function() {
@@ -39,6 +39,15 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
 
   }
 
+}
+
+this.isDead = function() {
+  if(this.lifespan < 0){
+    //return true;
+
+  } else {
+    return false;
+  }
 }
 
 }
