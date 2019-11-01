@@ -10,7 +10,7 @@ function Particle(x, y, vx, vy, ax, ay, rad, clr){
 this.render = function(){
 
   context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
-  context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';;
+  context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';
   context.beginPath();
 
   context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);

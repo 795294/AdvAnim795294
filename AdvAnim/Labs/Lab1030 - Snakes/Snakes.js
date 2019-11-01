@@ -7,30 +7,20 @@ function Snake(x, y, rad, vx, vy, ax, ay){
 
   this.radius = rad;
 
+  this.lifespan = Math.random()*1;
+
 
   this.render = function() {
 
-      context.strokeStyle = 'rgb(255,0,0)';
-      context.fillStyle = 'rgb(255,0,0)';
-      context.beginPath();
+    this.drawSegments();
 
-      context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
-      context.stroke();
-      context.fill();
-
-      for (var i = 0; i < this.segments.length; i++){
-        var pos = this.segments[i];
-
-        context.strokeStyle = 'rgb(255,0,0)';
-        context.fillStyle = 'rgb(255,0,0)';
-        context.beginPath();
-
-        context.arc(pos.x, pos.y, this.radius, 0, Math.PI*2, true);
-        context.stroke();
-        context.fill();
-
-      }
-
+    context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
+    context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';
+    context.beginPath();
+ 
+    context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+    context.stroke();
+    context.fill();
 
   }
 
@@ -45,7 +35,7 @@ function Snake(x, y, rad, vx, vy, ax, ay){
 
     this.segments.push(loc);
 
-    if(this.segments.length > 500){
+    if(this.segments.length > 50){
       this.segments.splice(0,1);
     }
 
@@ -58,6 +48,8 @@ function Snake(x, y, rad, vx, vy, ax, ay){
     this.update();
     this.render();
     this.checkEdges();
+
+    this.transparency -= 0.003;
 
   }
 
@@ -73,4 +65,19 @@ function Snake(x, y, rad, vx, vy, ax, ay){
 
 
 
+  }
+
+  this.drawSegments = function(){
+    for (var i = 0; i < this.segments.length; i++){
+      var pos = this.segments[i];
+
+      context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
+      context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';
+      context.beginPath();
+
+      context.arc(pos.x, pos.y, this.radius, 0, Math.PI*2, true);
+      context.stroke();
+      context.fill();
+
+    }
   }

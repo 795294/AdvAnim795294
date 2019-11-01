@@ -40,6 +40,6 @@ function draw(){
 
 function loadSnakes(n){
   for(let i = 0; i<n; i++){
-    snakes.push(new Snake(Math.random()*(770-30)+30,Math.random()*(770-30)+30,10,(Math.random()*4)-2,(Math.random()*4)-2,0,0));
+    snakes.push(new Snake(Math.random()*(770-30)+30,Math.random()*(770-30)+30,10,(Math.random()*4)-2,(Math.random()*4)-2,0,0.05));
   }
 }
