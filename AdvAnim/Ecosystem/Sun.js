@@ -56,8 +56,8 @@ function Sun(x, y, rad, hue, vx, vy){
       }
   }
 
-  this.checkCollision = function(v2){ //  v2 is a ship object
-    var d = this.loc.distance(v2.loc);
+  this.checkCollision = function(ship){
+    var d = this.loc.distance(ship.loc);
 
     if(d<this.radius){
 

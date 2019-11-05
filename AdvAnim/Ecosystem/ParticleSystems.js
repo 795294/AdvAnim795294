@@ -7,7 +7,7 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
   this.acc = new JSVector(ax, ay);
   this.frameCount = 0;
 
-  this.lifespan = Math.random()*50;
+  this.lifespan = 15;
 
 
   this.update = function() {
@@ -35,15 +35,15 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
 
   this.loadParticles = function(n){
     for(var i = 0; i<n; i++){
-      this.pArray.push(new Particle(this.loc.x,this.loc.y,(Math.random()*3)-1.5,(Math.random()*3)-1.5,0,0.01,10,"green"));
+      this.pArray.push(new Particle(this.loc.x,this.loc.y,(Math.random()*3)-1.5,(Math.random()*3)-1.5,0,0,5,"green"));
 
   }
 
 }
 
 this.isDead = function() {
-  if(this.lifespan < 0){
-    //return true;
+  if(this.lifespan < -100){
+    return true;
 
   } else {
     return false;

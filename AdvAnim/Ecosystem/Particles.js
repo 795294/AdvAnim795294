@@ -24,7 +24,7 @@ this.update = function(){
   this.loc.add(this.vel);
   this.vel.add(this.acc);
 
-  this.lifespan -= 0.003;
+  this.lifespan -= 0.01;
 
 }
 

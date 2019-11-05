@@ -12,7 +12,7 @@ let suns = [];
 let ships  = [];
 let enemies = [];
 
-//var collisionEvent;
+let snakes = [];
 
 var collideLocx;
 var collideLocy;
@@ -28,7 +28,7 @@ function setup(){
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
-
+  loadSnakes(5);
 
   loadSuns(2,5);
 
@@ -51,6 +51,7 @@ function draw(){
     } else {
       particleSystems.splice(i, 1);
     }
+
   }
 
   for(let i = 0; i<suns.length; i++){
@@ -70,6 +71,13 @@ function draw(){
 
       suns[i].checkCollision(ships[j]);
 
+    }
+
+    for(let j = 0; j < snakes.length; j++){
+
+      snakes[j].run();
+
+      //snakes[j].attract(suns[i]);
     }
 
     suns[i].run();
@@ -105,5 +113,13 @@ function loadShips(n){
   for(let i = 0; i<n; i++){
     ships.push(new Ship(Math.random()*(window.innerWidth-70)+70,Math.random()*(window.innerHeight-70)+70, (Math.random()*4)-2, (Math.random()*4)-2, (Math.random()*0.1)-0.1, (Math.random()*0.1)-0.1, Math.random()*360));
 
+  }
+}
+
+function loadSnakes(numSnakes){
+  for(let i = 0; i<numSnakes; i++){
+    snakes.push(new Snake(Math.random()*canvas.width, Math.random()*canvas.width, (Math.random()*10)-5, (Math.random()*10)-5, 10));
+
+    snakes[i].loadSegments(10);
   }
 }

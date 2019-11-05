@@ -49,12 +49,12 @@ function Ship(x, y, vx, vy, ax, ay, hue){
 
   }
 
-  this.attract = function(v2){
+  this.attract = function(suns){
 
-      var d = this.loc.distance(v2.loc);
+      var d = this.loc.distance(suns.loc);
 
       if(d < 300){
-        var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
+        var attractionForce = JSVector.subGetNew(suns.loc, this.loc);
         attractionForce.normalize();
         attractionForce.multiply(0.5);
         this.vel.add(attractionForce);
