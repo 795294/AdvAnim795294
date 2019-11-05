@@ -17,7 +17,7 @@ function Snake(x, y, rad, vx, vy, ax, ay){
     context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
     context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';
     context.beginPath();
- 
+
     context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
     context.stroke();
     context.fill();
@@ -81,3 +81,33 @@ function Snake(x, y, rad, vx, vy, ax, ay){
 
     }
   }
+
+function Snake(length, color, x, y, vx, vy, radius){
+  this.length = length;
+  this.color = color;
+  this.loc = new JSVector(x, y);
+  this.vel = new JSVector(vx, vy);
+  this.radius = radius;
+  this.tail = [];
+  this.loadTailPts();
+}
+
+// loads tail[] with this.length JSVector points for the lines to be drawn at
+Snake.prototype.loadTailPts = function(){
+  this.tail.push(this.loc);
+  for(i = 0; i < this.length; i++){
+    this.tail.push(new JSVector(this.loc.x, this.loc.y));
+  }
+}
+
+Snake.prototype.checkUpdateDistance = function(){
+  for(let i = 0; i < this.tail.length - 1; i++){
+    if(this.tail[i+1].distance(this.tail[i]) > 10){
+      var newVel = this.vel;
+      newVel.setDirection(this.tail[i].getDirection(this.tail[i+1]));
+      newVel.normalize();
+      newVel.setMagnitude(this.vel.getMagnitude());
+      this.tail[i] += this.newVel;
+    }
+  }
+}
