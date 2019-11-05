@@ -28,16 +28,11 @@ function Snake(x, y, vx, vy, radius){
 
       context.lineWidth = this.lineWidth-(i*2.75);
 
-      context.lineJoin = 'round';
+      context.lineCap = 'round';
 
       context.beginPath();
       context.moveTo(this.segments[i-1].x, this.segments[i-1].y);
       context.lineTo(this.segments[i].x, this.segments[i].y);
-      context.fill();
-      context.stroke();
-
-      context.beginPath();
-      context.arc(this.segments[i].x, this.segments[i].y, (this.lineWidth-(i*2.5))/2, 0, Math.PI*2, false);
       context.fill();
       context.stroke();
 
