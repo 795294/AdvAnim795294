@@ -3,21 +3,23 @@ addEventListener("load", setup);
 var canvas;
 var context;
 
-let snakes  = [];
+var snake;
 
 
 function setup(){
   canvas = document.getElementById("cnv");
 
-  canvas.width = 800;
-  canvas.height = 800;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
   context = canvas.getContext("2d");
 
   canvas.style.border = 'solid black 2px';
-  canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
+  canvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
-  loadSnakes(20);
+  snake = new Snake(10, 'white', 200, 200, 5, 4, 20);
+
+  snake.loadSegments(10);
 
   draw();
 
@@ -28,18 +30,5 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  for(let i = 0; i<snakes.length; i++){
-    snakes[i].run();
-  }
-
-
-
-
-}
-
-
-function loadSnakes(n){
-  for(let i = 0; i<n; i++){
-    snakes.push(new Snake(Math.random()*(770-30)+30,Math.random()*(770-30)+30,10,(Math.random()*4)-2,(Math.random()*4)-2,0,0.05));
-  }
+  snake.run();
 }

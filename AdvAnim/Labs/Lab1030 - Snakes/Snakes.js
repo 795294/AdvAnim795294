@@ -1,113 +1,74 @@
-function Snake(x, y, rad, vx, vy, ax, ay){
-  this.loc = new JSVector(x,y);
-  this.vel = new JSVector(vx,vy);
-  this.acc = new JSVector(ax,ay);
+function Snake(length, color, x, y, vx, vy, radius){
+  this.length = length;
+  this.color = color;
+  this.loc = new JSVector(x, y);
+  this.initialVelocity = new JSVector(vx, vy);
+  this.newVector = new JSVector();
 
+  this.mag = this.initialVelocity.getMagnitude();
+  this.radius = radius;
   this.segments = [];
-
-  this.radius = rad;
-
-  this.lifespan = Math.random()*1;
-
+  this.velocities = [];
 
   this.render = function() {
 
-    this.drawSegments();
-
-    context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
-    context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';
-    context.beginPath();
-
-    context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
-    context.stroke();
-    context.fill();
-
-  }
-
-  this.update = function() {
-
-    this.loc.add(this.vel);
-    this.vel.add(this.acc);
-
-    this.vel.limit(4);
-
-    var loc = new JSVector(this.loc.x, this.loc.y);
-
-    this.segments.push(loc);
-
-    if(this.segments.length > 50){
-      this.segments.splice(0,1);
+    for(let i = 0; i < this.segments.length; i++){
+      context.strokeStyle = this.color;
+      context.fillStyle = this.color;
+      context.beginPath();
+      context.arc(this.segments[i].x, this.segments[i].y, this.radius, 0, Math.PI*2, false);
+      context.fill();
+      context.stroke();
     }
-
-
 
   }
 
   this.run = function() {
 
-    this.update();
+    this.updateSegments();
+
     this.render();
+
     this.checkEdges();
 
-    this.transparency -= 0.003;
-
   }
+
+  this.loadSegments = function(n){
+    for(let i = 0; i < n; i++){
+      this.segments.push(new JSVector(this.loc.x, this.loc.y));
+
+      this.velocities.push(new JSVector(this.initialVelocity.x, this.initialVelocity.y));
+    }
+  }
+
+  this.updateSegments = function(){
+
+    this.segments[0].add(this.velocities[0]);
+
+    for(let i = 1; i < this.segments.length; i++){
+      if(this.segments[i].distance(this.segments[i-1]) > 2*this.radius){
+
+        this.newVector = JSVector.subGetNew(this.segments[i], this.segments[i-1]);
+
+        this.newVector.setMagnitude(this.mag);
+
+        this.segments[i] = this.segments[i].sub(this.newVector);
+
+      }
+    }
+  }
+
 
   this.checkEdges = function(){
-    if(this.loc.x + this.radius > canvas.width || this.loc.x - this.radius < 0){
-      this.vel.x = -this.vel.x;
+    if(this.segments[0].x + this.radius > canvas.width || this.segments[0].x - this.radius < 0){
+      this.velocities[0].x = -this.velocities[0].x;
     }
 
-    if(this.loc.y + this.radius > canvas.height || this.loc.y - this.radius < 0){
-      this.vel.y = -this.vel.y;
-    }
-  }
-
-
-
-  }
-
-  this.drawSegments = function(){
-    for (var i = 0; i < this.segments.length; i++){
-      var pos = this.segments[i];
-
-      context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
-      context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';
-      context.beginPath();
-
-      context.arc(pos.x, pos.y, this.radius, 0, Math.PI*2, true);
-      context.stroke();
-      context.fill();
-
+    if(this.segments[0].y + this.radius > canvas.height || this.segments[0].y - this.radius < 0){
+      this.velocities[0].y = -this.velocities[0].y;
     }
   }
 
-function Snake(length, color, x, y, vx, vy, radius){
-  this.length = length;
-  this.color = color;
-  this.loc = new JSVector(x, y);
-  this.vel = new JSVector(vx, vy);
-  this.radius = radius;
-  this.tail = [];
-  this.loadTailPts();
-}
 
-// loads tail[] with this.length JSVector points for the lines to be drawn at
-Snake.prototype.loadTailPts = function(){
-  this.tail.push(this.loc);
-  for(i = 0; i < this.length; i++){
-    this.tail.push(new JSVector(this.loc.x, this.loc.y));
-  }
-}
 
-Snake.prototype.checkUpdateDistance = function(){
-  for(let i = 0; i < this.tail.length - 1; i++){
-    if(this.tail[i+1].distance(this.tail[i]) > 10){
-      var newVel = this.vel;
-      newVel.setDirection(this.tail[i].getDirection(this.tail[i+1]));
-      newVel.normalize();
-      newVel.setMagnitude(this.vel.getMagnitude());
-      this.tail[i] += this.newVel;
-    }
   }
-}
