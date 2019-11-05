@@ -1,6 +1,4 @@
-function Snake(length, color, x, y, vx, vy, radius){
-  this.length = length;
-  this.color = color;
+function Snake(x, y, vx, vy, radius){
   this.loc = new JSVector(x, y);
   this.initialVelocity = new JSVector(vx, vy);
   this.newVector = new JSVector();
@@ -10,15 +8,39 @@ function Snake(length, color, x, y, vx, vy, radius){
   this.segments = [];
   this.velocities = [];
 
+  this.lineWidth = 30;
+
+  this.transparency = 1;
+
   this.render = function() {
 
-    for(let i = 0; i < this.segments.length; i++){
-      context.strokeStyle = this.color;
-      context.fillStyle = this.color;
+    context.strokeStyle = 'rgba(255,255,255,'+this.transparency+')';
+    context.fillStyle = 'rgba(255,255,255,'+this.transparency+')';
+    context.beginPath();
+    context.arc(this.segments[0].x, this.segments[0].y, this.radius, 0, Math.PI*2, false);
+    context.fill();
+    context.stroke();
+
+    for(let i = 1; i < this.segments.length; i++){
+
+      context.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
+      context.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
+
+      context.lineWidth = this.lineWidth-(i*2.75);
+
+      context.lineJoin = 'round';
+
       context.beginPath();
-      context.arc(this.segments[i].x, this.segments[i].y, this.radius, 0, Math.PI*2, false);
+      context.moveTo(this.segments[i-1].x, this.segments[i-1].y);
+      context.lineTo(this.segments[i].x, this.segments[i].y);
       context.fill();
       context.stroke();
+
+      context.beginPath();
+      context.arc(this.segments[i].x, this.segments[i].y, (this.lineWidth-(i*2.5))/2, 0, Math.PI*2, false);
+      context.fill();
+      context.stroke();
+
     }
 
   }
