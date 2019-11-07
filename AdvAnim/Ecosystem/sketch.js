@@ -77,7 +77,7 @@ function draw(){
 
       snakes[j].run();
 
-      //snakes[j].attract(suns[i]);
+      snakes[j].attract(suns[i]);
     }
 
     suns[i].run();
@@ -90,8 +90,6 @@ function draw(){
 function newPS(collisionEvent){
 
     particleSystems.push(new ParticleSystem(collideLocx, collideLocy, 0, 0, 0, 0, 10, "green"));
-    console.log("event");
-
 
 }
 
@@ -120,6 +118,6 @@ function loadSnakes(numSnakes){
   for(let i = 0; i<numSnakes; i++){
     snakes.push(new Snake(Math.random()*canvas.width, Math.random()*canvas.width, (Math.random()*10)-5, (Math.random()*10)-5, 10));
 
-    snakes[i].loadSegments(10);
+    snakes[i].loadSegments(50);
   }
 }

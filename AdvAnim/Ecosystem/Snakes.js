@@ -23,10 +23,10 @@ function Snake(x, y, vx, vy, radius){
 
     for(let i = 1; i < this.segments.length; i++){
 
-      context.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
-      context.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
+      context.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.02)+')';
+      context.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.02)+')';
 
-      context.lineWidth = this.lineWidth-(i*2.75);
+      context.lineWidth = this.lineWidth-(i*0.6);
 
       context.lineCap = 'round';
 
@@ -62,8 +62,10 @@ function Snake(x, y, vx, vy, radius){
 
     this.segments[0].add(this.velocities[0]);
 
+    this.velocities[0].limit(2);
+
     for(let i = 1; i < this.segments.length; i++){
-      if(this.segments[i].distance(this.segments[i-1]) > 2*this.radius){
+      if(this.segments[i].distance(this.segments[i-1]) > this.radius){
 
         this.newVector = JSVector.subGetNew(this.segments[i], this.segments[i-1]);
 
@@ -94,7 +96,7 @@ function Snake(x, y, vx, vy, radius){
         var attractionForce = JSVector.subGetNew(suns.loc, this.loc);
         attractionForce.normalize();
         attractionForce.multiply(0.5);
-        this.velocities[0].add(attractionForce);
+        this.initialVelocity.add(attractionForce);
       }
 
 
