@@ -25,12 +25,12 @@ function Boid(x, y, hue){
       this.angle = this.vel.getDirection();
       context.rotate(this.angle - Math.PI/2);
       context.beginPath();
-      context.moveTo(-9, -12);
-      context.lineTo(0,15);
-      context.moveTo(0,15);
-      context.lineTo(9,-12);
-      context.moveTo(9,-12);
-      context.lineTo(-9,-12);
+      context.moveTo(-9/2, -12/2);
+      context.lineTo(0,15/2);
+      context.moveTo(0,15/2);
+      context.lineTo(9/2,-12/2);
+      context.moveTo(9/2,-12/2);
+      context.lineTo(-9/2,-12/2);
 
       context.restore();
 
@@ -52,6 +52,7 @@ function Boid(x, y, hue){
     this.flock(boids);
     this.render();
     this.update();
+    //this.checkEdges();
 
   }
 
@@ -61,16 +62,26 @@ function Boid(x, y, hue){
 //force accumulation
   this.flock = function(boids){
     let sepForce = this.separate(boids);
-    // let aliForce = this.align(boids);
-    // let cohForce = this.cohesion(boids);
+    let aliForce = this.align(boids);
+    let cohForce = this.cohesion(boids);
     //arbitrary multipliers
     sepForce.multiply(1.5);
-    // aliForce.multiply(1.0);
-    // cohForce.multiply(1.0);
+    aliForce.multiply(1.0);
+    cohForce.multiply(1.0);
 
     this.applyForce(sepForce);
-    // this.applyForce(aliForce);
-    // this.applyForce(cohForce);
+    this.applyForce(aliForce);
+    this.applyForce(cohForce);
+  }
+
+  this.checkEdges = function(){
+    if (this.loc.x > 25 || this.loc.x < 700) {
+      let desired = new JSVector(this.maxspeed,this.vel.y);
+      let steer = JSVector.subGetNew(desired, this.vel);
+
+      steer.limit(this.maxforce);
+      this.applyForce(steer);
+    }
   }
 
   this.seek = function(target){
@@ -79,7 +90,7 @@ function Boid(x, y, hue){
     desired.normalize();
     desired.multiply(this.maxspeed);
     // Steering = Desired minus Velocity
-    let steer = JSVector.subGetNew(desired,this.velocity);
+    let steer = JSVector.subGetNew(desired, this.vel);
     steer.limit(this.maxforce);  // Limit to maximum steering force
     return steer;
   }
@@ -116,6 +127,54 @@ function Boid(x, y, hue){
     }
       return steer;
     }
+
+  this.align = function(boids){
+    let neighbordist = 50;
+    let sum = new JSVector(0,0);
+    let count = 0;
+    for (let i = 0; i < boids.length; i++) {
+      let d = this.loc.distance(boids[i].loc);
+
+      if ((d > 0) && (d < neighbordist)) {
+        sum.add(boids[i].vel);
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.divide(count);
+      sum.normalize();
+      sum.multiply(this.maxspeed);
+      let steer = JSVector.subGetNew(sum, this.vel);
+      steer.limit(this.maxforce);
+      return steer;
+    } else {
+      return new JSVector(0, 0);
+    }
+  }
+
+  this.cohesion = function(boids){
+    let neighbordist = 50;
+
+    let sum = new JSVector(0,0);
+
+    let count = 0;
+
+    for(let i = 0; i < boids.length; i++){
+      let d = this.loc.distance(boids[i].loc);
+
+      if((d > 0) && (d < neighbordist)){
+        sum.add(boids[i].loc);
+        count++;
+      }
+    }
+
+    if(count > 0){
+      sum.divide(count);
+      return this.seek(sum);
+    } else {
+      return new JSVector(0,0);
+    }
+  }
 
 
 }

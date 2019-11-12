@@ -20,7 +20,7 @@ function setup(){
 
   flock = new Flock();
 
-  for(let i = 0; i< 100; i++) {
+  for(let i = 0; i < 500; i++) {
     let b = new Boid(Math.random()*(window.innerWidth-70)+70,Math.random()*(window.innerHeight-70)+70, Math.random()*360);
     flock.addBoid(b);
   }
