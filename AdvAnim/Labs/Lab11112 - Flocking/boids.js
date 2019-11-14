@@ -4,8 +4,8 @@ function Boid(x, y, hue){
   this.vel = new JSVector((Math.random()*2)-1, (Math.random()*2)-1);
   this.acc = new JSVector(0, 0);
   this.hue = hue;
-  this.maxspeed = 3;
-  this.maxforce = 0.05;
+  this.maxspeed = 5;
+  this.maxforce = 0.1;
 
   this.render = function() {
 
@@ -52,7 +52,7 @@ function Boid(x, y, hue){
     this.flock(boids);
     this.render();
     this.update();
-    //this.checkEdges();
+    this.checkEdges();
 
   }
 
@@ -75,11 +75,35 @@ function Boid(x, y, hue){
   }
 
   this.checkEdges = function(){
-    if (this.loc.x > 25 || this.loc.x < 700) {
+    if (this.loc.x < 100) {
       let desired = new JSVector(this.maxspeed,this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
-      steer.limit(this.maxforce);
+      steer.limit(this.maxforce*10);
+      this.applyForce(steer);
+    }
+
+    if (this.loc.x > window.innerWidth - 100) {
+      let desired = new JSVector(-this.maxspeed,this.vel.y);
+      let steer = JSVector.subGetNew(desired, this.vel);
+
+      steer.limit(this.maxforce*10);
+      this.applyForce(steer);
+    }
+
+    if (this.loc.y < 100) {
+      let desired = new JSVector(this.vel.x, this.maxspeed);
+      let steer = JSVector.subGetNew(desired, this.vel);
+
+      steer.limit(this.maxforce*10);
+      this.applyForce(steer);
+    }
+
+    if (this.loc.y > window.innerHeight - 100) {
+      let desired = new JSVector(this.vel.x, -this.maxspeed);
+      let steer = JSVector.subGetNew(desired, this.vel);
+
+      steer.limit(this.maxforce*10);
       this.applyForce(steer);
     }
   }
