@@ -7,6 +7,8 @@ function Boid(x, y, hue){
   this.maxspeed = 5;
   this.maxforce = 0.1;
 
+
+
   this.render = function() {
 
       this.hue ++;
@@ -76,34 +78,34 @@ function Boid(x, y, hue){
 
   this.checkEdges = function(){
     if (this.loc.x < 100) {
-      let desired = new JSVector(this.maxspeed,this.vel.y);
+      let desired = new JSVector(wallRepulsion,this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
-      steer.limit(this.maxforce*10);
+      steer.limit(this.maxforce*1.5);
       this.applyForce(steer);
     }
 
     if (this.loc.x > window.innerWidth - 100) {
-      let desired = new JSVector(-this.maxspeed,this.vel.y);
+      let desired = new JSVector(-wallRepulsion,this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
-      steer.limit(this.maxforce*10);
+      steer.limit(this.maxforce*1.5);
       this.applyForce(steer);
     }
 
     if (this.loc.y < 100) {
-      let desired = new JSVector(this.vel.x, this.maxspeed);
+      let desired = new JSVector(this.vel.x, wallRepulsion);
       let steer = JSVector.subGetNew(desired, this.vel);
 
-      steer.limit(this.maxforce*10);
+      steer.limit(this.maxforce*1.5);
       this.applyForce(steer);
     }
 
     if (this.loc.y > window.innerHeight - 100) {
-      let desired = new JSVector(this.vel.x, -this.maxspeed);
+      let desired = new JSVector(this.vel.x, -wallRepulsion);
       let steer = JSVector.subGetNew(desired, this.vel);
 
-      steer.limit(this.maxforce*10);
+      steer.limit(this.maxforce*1.5);
       this.applyForce(steer);
     }
   }
@@ -112,7 +114,7 @@ function Boid(x, y, hue){
     let desired = JSVector.subGetNew(target,this.loc);
     // Normalize desired and scale to maximum speed
     desired.normalize();
-    desired.multiply(this.maxspeed);
+    desired.multiply(cohesion);
     // Steering = Desired minus Velocity
     let steer = JSVector.subGetNew(desired, this.vel);
     steer.limit(this.maxforce);  // Limit to maximum steering force
@@ -145,7 +147,7 @@ function Boid(x, y, hue){
     if (steer.getMagnitude() > 0) {
 
       steer.normalize();
-      steer.multiply(this.maxspeed);
+      steer.multiply(separate);
       steer.sub(this.vel);
       steer.limit(this.maxforce);
     }
@@ -167,7 +169,7 @@ function Boid(x, y, hue){
     if (count > 0) {
       sum.divide(count);
       sum.normalize();
-      sum.multiply(this.maxspeed);
+      sum.multiply(alignment);
       let steer = JSVector.subGetNew(sum, this.vel);
       steer.limit(this.maxforce);
       return steer;
