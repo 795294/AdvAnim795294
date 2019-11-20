@@ -5,38 +5,34 @@
       <script src = "sketch.js"></script>
       <script src = "flock.js"></script>
 
+      <link rel="stylesheet" href="styles.css">
+
+      <link href="https://fonts.googleapis.com/css?family=Odibee+Sans&display=swap" rel="stylesheet">
+
+
   </head>
 
   <body>
      <div id="wrapper">
 
-       <div id="sliderDiv">
+       <div class="slidecontainer">
 
-        <div class="slider">
           Separation<br>
-          <input id = "sep" type="range">
-        </div>
 
-        <div class="slider">
+          <input type="range" min="1" max="100" value="50" class = "slider" id="sep">
+
 
           Alignment<br>
-          <input id = "align" type="range">
 
-        </div>
+          <input type="range" min="1" max="100" value="50" class = "slider" id="align">
 
-        <div class="slider">
 
           Cohesion<br>
-          <input id = "coh" type="range">
+          <input type="range" min="1" max="100" value="50" class = "slider" id="coh">
 
-        </div>
 
-        <div class="slider">
-
-          WallRepulsion<br>
-          <input id = "rep" type="range">
-
-        </div>
+          Wall Repulsion<br>
+          <input type="range" min="1" max="100" value="50" class = "slider" id="rep">
 
       </div>
 

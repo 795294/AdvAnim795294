@@ -85,7 +85,7 @@ function Boid(x, y, hue){
       this.applyForce(steer);
     }
 
-    if (this.loc.x > window.innerWidth - 100) {
+    if (this.loc.x > canvas.width - 100) {
       let desired = new JSVector(-wallRepulsion,this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
@@ -101,7 +101,7 @@ function Boid(x, y, hue){
       this.applyForce(steer);
     }
 
-    if (this.loc.y > window.innerHeight - 100) {
+    if (this.loc.y > canvas.height - 100) {
       let desired = new JSVector(this.vel.x, -wallRepulsion);
       let steer = JSVector.subGetNew(desired, this.vel);
 

@@ -1,0 +1,37 @@
+body{
+  font-family: 'Odibee Sans', cursive;
+  text-align: center;
+  font-size: 25px;
+  text-decoration: underline;
+  color: #03c6fc;
+}
+
+.slidercontainer{
+  width: 100%
+}
+
+
+.slider{
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover{
+  opacity: 100;
+}
+
+.slider::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #42f2f5;
+  cursor: pointer;
+}
