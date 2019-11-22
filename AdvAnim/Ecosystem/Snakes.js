@@ -8,7 +8,7 @@ function Snake(x, y, vx, vy, radius){
   this.segments = [];
   this.velocities = [];
 
-  this.lineWidth = 30;
+  this.lineWidth = 10;
 
   this.transparency = 1;
 

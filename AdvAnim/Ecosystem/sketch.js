@@ -17,6 +17,14 @@ let snakes = [];
 var collideLocx;
 var collideLocy;
 
+var separate = 0;
+var alignment = 0;
+var cohesion = 0;
+var wallRepulsion = 0;
+
+var redFlock;
+var blueFlock;
+
 function setup(){
   canvas = document.getElementById("cnv");
 
@@ -33,6 +41,10 @@ function setup(){
   loadSuns(2,5);
 
   loadShips(7);
+
+  loadRedFlock(500);
+
+  loadBlueFlock(500);
 
   draw();
 
@@ -83,6 +95,14 @@ function draw(){
     suns[i].run();
   }
 
+  redFlock.run();
+  blueFlock.run();
+
+  separate = document.getElementById("sep").value;
+  alignment = document.getElementById("align").value;
+  cohesion = document.getElementById("coh").value;
+  wallRepulsion = document.getElementById("rep").value;
+
 
   }
 
@@ -118,6 +138,24 @@ function loadSnakes(numSnakes){
   for(let i = 0; i<numSnakes; i++){
     snakes.push(new Snake(Math.random()*canvas.width, Math.random()*canvas.width, (Math.random()*10)-5, (Math.random()*10)-5, 10));
 
-    snakes[i].loadSegments(50);
+    snakes[i].loadSegments(15);
+  }
+}
+
+function loadRedFlock(n){
+  redFlock = new Flock();
+
+  for(let i = 0; i < n; i++) {
+    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'red');
+    redFlock.addRedBoid(b);
+  }
+}
+
+function loadBlueFlock(n){
+  blueFlock = new Flock();
+
+  for(let i = 0; i < n; i++) {
+    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'blue');
+    blueFlock.addBlueBoid(b);
   }
 }

@@ -8,13 +8,43 @@
       <script src = "Sun.js"></script>
       <script src = "Ships.js"></script>
       <script src = "Snakes.js"></script>
+      <script src = "boids.js"></script>
+      <script src = "flock.js"></script>
+
+      <link rel="stylesheet" href="styles.css">
+
+      <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
 
   </head>
 
   <body>
+     <div id="wrapper">
 
-    <canvas id = "cnv"> </canvas>
+       <div class="slidecontainer">
 
-  </body>
+          Separation<br>
+
+          <input type="range" min="1" max="100" value="50" class = "slider" id="sep">
+
+
+          Alignment<br>
+
+          <input type="range" min="1" max="100" value="50" class = "slider" id="align">
+
+
+          Cohesion<br>
+          <input type="range" min="1" max="100" value="50" class = "slider" id="coh">
+
+
+          Wall Repulsion<br>
+          <input type="range" min="1" max="100" value="50" class = "slider" id="rep">
+
+      </div>
+
+      <canvas id = "cnv" ></canvas>
+
+    </div>
+
+ </body>
 
 </html>
