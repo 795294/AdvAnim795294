@@ -1,4 +1,4 @@
-function Boid(x, y, type){
+function Boid(x, y, type, oR){
 
   this.loc = new JSVector(x,y);
   this.vel = new JSVector((Math.random()*2)-1, (Math.random()*2)-1);
@@ -9,13 +9,17 @@ function Boid(x, y, type){
   this.type = type;
   this.scale = 10;
 
+  this.planet = null;
+  this.rotator = 0;
+  this.orbRadius = 100;
+  this.isEaten = false;
+
+
 
 
   this.render = function() {
 
     if(this.type === 'red'){
-
-      console.log("red");
 
       context.lineWidth = 2;
       context.strokeStyle =  'red';
@@ -80,10 +84,31 @@ function Boid(x, y, type){
 
   this.run = function(boids) {
 
+    this.checkOrbit();
+
     this.flock(boids);
     this.render();
-    this.update();
-    this.checkEdges();
+
+
+    if(!this.planet){
+      this.update();
+      this.checkEdges();
+    } else {
+      context.lineWidth = 1;
+      context.strokeStyle = this.color;
+      context.moveTo(this.planet.loc.x, this.planet.loc.y);
+      context.lineTo(this.loc.x, this.loc.y);
+      context.stroke();
+
+      this.eat(this.planet);
+      this.update();
+
+      if(this.loc.distance(this.planet.loc) < 1){
+        this.isEaten = true;
+
+      }
+    }
+
 
   }
 
@@ -228,6 +253,44 @@ function Boid(x, y, type){
       return this.seek(sum);
     } else {
       return new JSVector(0,0);
+    }
+  }
+
+  this.checkOrbit = function(){
+    if(this.planet){
+      return;
+    }
+
+    for(let i = 0; i < suns.length; i++){
+
+      if(this.loc.distance(suns[i].loc) < this.orbRadius + suns[i].radius){
+        this.planet = suns[i];
+        this.rotator = JSVector.subGetNew(this.loc, this.planet.loc);
+        this.rotator.setMagnitude(this.orbRadius + suns[i].radius);
+
+      }
+    }
+  }
+
+  this.orbit = function(p){
+
+    var h = this.orbRadius + p.radius;
+    this.rotator.rotate(.008);
+    this.loc.x = p.loc.x + this.rotator.x;
+    this.loc.y = p.loc.y + this.rotator.y;
+
+  }
+
+  this.eat = function(planet){
+
+    if(this.loc.distance(planet.loc) < this.orbRadius + planet.radius){
+
+    var hunger = JSVector.subGetNew(planet.loc, this.loc);
+    hunger.normalize();
+    hunger.multiply(.6);
+    this.vel.add(hunger);
+    this.vel.limit(2);
+
     }
   }
 

@@ -7,7 +7,7 @@ var hue  = 0;
 
 let planets  = [];
 let particleSystems = [];
-let suns = [];
+var suns = [];
 
 let ships  = [];
 let enemies = [];
@@ -146,7 +146,7 @@ function loadRedFlock(n){
   redFlock = new Flock();
 
   for(let i = 0; i < n; i++) {
-    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'red');
+    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'red', 100);
     redFlock.addRedBoid(b);
   }
 }
@@ -155,7 +155,7 @@ function loadBlueFlock(n){
   blueFlock = new Flock();
 
   for(let i = 0; i < n; i++) {
-    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'blue');
+    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'blue', 100);
     blueFlock.addBlueBoid(b);
   }
 }

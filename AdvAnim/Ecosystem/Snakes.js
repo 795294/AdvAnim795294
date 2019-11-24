@@ -14,8 +14,8 @@ function Snake(x, y, vx, vy, radius){
 
   this.render = function() {
 
-    context.strokeStyle = 'rgba(255,255,255,'+this.transparency+')';
-    context.fillStyle = 'rgba(255,255,255,'+this.transparency+')';
+    context.strokeStyle = 'rgba(255,0,255,'+this.transparency+')';
+    context.fillStyle = 'rgba(255,0,255,'+this.transparency+')';
     context.beginPath();
     context.arc(this.segments[0].x, this.segments[0].y, this.radius, 0, Math.PI*2, false);
     context.fill();
