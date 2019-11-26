@@ -5,7 +5,7 @@ function Planet(x, y, rad, or, hue){
   this.orbitRadius = or;
   this.hue = hue;
   this.angle = Math.random()*360;
-  this.aVel = Math.random()*0.001;
+  this.aVel = Math.random()*0.01;
   this.orbitRadiusChange = 0.5;
 
   this.render = function() {

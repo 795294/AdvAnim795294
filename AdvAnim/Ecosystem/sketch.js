@@ -1,5 +1,6 @@
 addEventListener("load", setup);
 window.addEventListener("collide", newPS);
+window.addEventListener("orbiter", addNewPlanet)
 
 var canvas;
 var context;
@@ -38,7 +39,9 @@ function setup(){
 
   loadSnakes(5);
 
-  loadSuns(2,5);
+  loadSuns(2);
+
+  loadPlanets(1);
 
   loadShips(7);
 
@@ -92,11 +95,14 @@ function draw(){
       snakes[j].attract(suns[i]);
     }
 
+
     suns[i].run();
   }
 
   redFlock.run();
+
   blueFlock.run();
+
 
   separate = document.getElementById("sep").value;
   alignment = document.getElementById("align").value;
@@ -107,23 +113,31 @@ function draw(){
   }
 
 
-function newPS(collisionEvent){
+function newPS(){
 
     particleSystems.push(new ParticleSystem(collideLocx, collideLocy, 0, 0, 0, 0, 10, "green"));
 
 }
 
 
-function loadSuns(numSuns, numPlanetsPerSun){
+function loadSuns(numSuns){
   for(let i = 0; i<numSuns; i++){
+
     suns.push(new Sun(Math.random()*(window.innerWidth-70)+70,Math.random()*(window.innerHeight-70)+70, 10, Math.random()*360, (Math.random()*1)-0.5, (Math.random()*1)-0.5));
 
-    for(let j = 0; j<numPlanetsPerSun; j++){
-
-      planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*4)+2, (Math.random()*50)+20, Math.random()*360));
-
-    }
   }
+}
+
+function loadPlanets(numPlanetsPerSun){
+  for(let i = 0; i < numPlanetsPerSun; i++){
+
+    planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*4)+2, (Math.random()*50)+20, Math.random()*360));
+
+  }
+}
+
+function addNewPlanet(){
+    planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*4)+2, (Math.random()*50)+20, Math.random()*360));
 }
 
 

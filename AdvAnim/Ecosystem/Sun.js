@@ -70,7 +70,7 @@ function Sun(x, y, rad, hue, vx, vy){
       this.vel.x = (Math.random()*1)-0.5;
       this.vel.y = (Math.random()*1)-0.5;
 
-      //
+
       var collisionEvent = new Event("collide");
       window.dispatchEvent(collisionEvent);
 

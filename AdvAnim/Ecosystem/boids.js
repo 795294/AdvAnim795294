@@ -1,10 +1,10 @@
 function Boid(x, y, type, oR){
 
   this.loc = new JSVector(x,y);
-  this.vel = new JSVector((Math.random()*2)-1, (Math.random()*2)-1);
+  this.vel = new JSVector((Math.random()*1)-0.5, (Math.random()*1)-0.5);
   this.acc = new JSVector(0, 0);
   this.hue = hue;
-  this.maxspeed = 5;
+  this.maxspeed = 3;
   this.maxforce = 0.1;
   this.type = type;
   this.scale = 10;
@@ -14,8 +14,7 @@ function Boid(x, y, type, oR){
   this.orbRadius = 100;
   this.isEaten = false;
 
-
-
+  this.eatCount = 0;
 
   this.render = function() {
 
@@ -94,17 +93,21 @@ function Boid(x, y, type, oR){
       this.update();
       this.checkEdges();
     } else {
-      context.lineWidth = 1;
-      context.strokeStyle = this.color;
-      context.moveTo(this.planet.loc.x, this.planet.loc.y);
-      context.lineTo(this.loc.x, this.loc.y);
-      context.stroke();
+      if(this.loc.distance(this.planet.loc) < this.orbRadius + this.planet.radius){
+        context.lineWidth = 1;
+        //context.strokeStyle = this.color;
+        context.moveTo(this.planet.loc.x, this.planet.loc.y);
+        context.lineTo(this.loc.x, this.loc.y);
+        context.stroke();
+      }
 
       this.eat(this.planet);
       this.update();
 
-      if(this.loc.distance(this.planet.loc) < 1){
+      if(this.loc.distance(this.planet.loc) < this.planet.radius){
         this.isEaten = true;
+
+        this.eatCount++;
 
       }
     }
@@ -285,13 +288,27 @@ function Boid(x, y, type, oR){
 
     if(this.loc.distance(planet.loc) < this.orbRadius + planet.radius){
 
-    var hunger = JSVector.subGetNew(planet.loc, this.loc);
-    hunger.normalize();
-    hunger.multiply(.6);
-    this.vel.add(hunger);
-    this.vel.limit(2);
+      var hunger = JSVector.subGetNew(planet.loc, this.loc);
+      hunger.normalize();
+      hunger.multiply(.6);
+      this.vel.add(hunger);
+      this.vel.limit(2);
 
     }
+  }
+
+  this.repel = function(suns){
+
+      var d = this.loc.distance(suns.loc);
+
+      if(d < 300){
+        var repulsionForce = JSVector.subGetNew(suns.loc, this.loc);
+        repulsionForce.normalize();
+        repulsionForce.multiply(0.5);
+        this.vel.add(repulsionForce);
+      }
+
+
   }
 
 
