@@ -10,6 +10,7 @@ function Boid(x, y, type, oR){
   this.scale = 10;
 
   this.planet = null;
+
   this.rotator = 0;
   this.orbRadius = 100;
   this.isEaten = false;
@@ -85,6 +86,8 @@ function Boid(x, y, type, oR){
 
     this.checkOrbit();
 
+    this.repel();
+
     this.flock(boids);
     this.render();
 
@@ -95,7 +98,6 @@ function Boid(x, y, type, oR){
     } else {
       if(this.loc.distance(this.planet.loc) < this.orbRadius + this.planet.radius){
         context.lineWidth = 1;
-        //context.strokeStyle = this.color;
         context.moveTo(this.planet.loc.x, this.planet.loc.y);
         context.lineTo(this.loc.x, this.loc.y);
         context.stroke();
@@ -297,15 +299,20 @@ function Boid(x, y, type, oR){
     }
   }
 
-  this.repel = function(suns){
+  this.repel = function(){
 
-      var d = this.loc.distance(suns.loc);
+      for(let i = 0; i < suns.length; i++){
 
-      if(d < 300){
-        var repulsionForce = JSVector.subGetNew(suns.loc, this.loc);
-        repulsionForce.normalize();
-        repulsionForce.multiply(0.5);
-        this.vel.add(repulsionForce);
+        var d = this.loc.distance(suns[i].loc);
+
+        if(d < this.orbRadius + suns[i].radius+50){
+          var repulsionForce = JSVector.addGetNew(suns[i].loc, this.loc);
+          repulsionForce.normalize();
+          repulsionForce.multiply(0.5);
+          this.vel.add(repulsionForce);
+
+
+        }
       }
 
 
