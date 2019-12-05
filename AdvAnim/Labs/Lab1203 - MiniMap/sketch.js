@@ -12,8 +12,8 @@ var canvasHeight = 600;
 var worldWidth = 4000;
 var worldHeight = 3000;
 
-var canvasX = -1600;   // where the origin is
-var canvasY = -1200;
+var canvasX = -400;   // where the origin is
+var canvasY = -300;
 
 
 function setup(){
@@ -39,16 +39,43 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
+  context.save();
 
+  context.translate(-canvasX, -canvasY);
+
+  context.beginPath();
+
+  context.moveTo(-2000,0);
+
+  context.lineTo(2000,0);
+
+  context.moveTo(0,-1500);
+
+  context.lineTo(0,1500);
+
+  context.strokeStyle = 'red';
+
+  context.lineWidth = 2;
+
+  context.stroke();
+
+  context.beginPath();
+
+  context.rect(-2000,-1500, 4000, 3000);
+
+  context.strokeStyle = 'blue';
+
+  context.lineWidth = 2;
+
+  context.stroke();
 
   for(let i = 0; i < snakes.length; i++){
 
     snakes[i].run();
   }
 
-    context.setTransform(1,0,0,1,0,0);
+  context.restore();
 
-    context.translate(-canvasX, -canvasY);
 }
 
 function loadSnakes(numSnakes){
@@ -61,7 +88,29 @@ function loadSnakes(numSnakes){
 
 function moveCanvas(keyPressed){
 
-  if(keyPressed.code = "ArrowRight"){
-    canvasX -= 1;
+  var canvasMovementRate = 5;
+
+  if(keyPressed.code === "ArrowRight"){
+    canvasX += canvasMovementRate;
   }
+
+  if(keyPressed.code === "ArrowLeft"){
+    canvasX -= canvasMovementRate;
+  }
+
+  if(keyPressed.code === "ArrowDown"){
+    canvasY += canvasMovementRate;
+  }
+
+  if(keyPressed.code === "ArrowUp"){
+    canvasY -= canvasMovementRate;
+  }
+
+  if(keyPressed.code === "ShiftRight"){
+    canvasMovementRate*10;
+  } else {
+    canvasMovementRate*1;
+  }
+
+  console.log(keyPressed);
 }
