@@ -9,11 +9,23 @@ let snakes = [];
 var canvasWidth = 800;
 var canvasHeight = 600;
 
-var worldWidth = 4000;
-var worldHeight = 3000;
-
 var canvasX = -400;   // where the origin is
 var canvasY = -300;
+
+var miniCtx;
+var miniCanvas;
+
+var world =
+{
+  width: 4000,
+  height: 3000,
+};
+
+var minimap = // Object to draw minimap
+{
+    width: world.width / 10,
+    height: world.height / 10,
+};
 
 
 function setup(){
@@ -27,8 +39,18 @@ function setup(){
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
-  loadSnakes(5);
+  miniCanvas = document.getElementById("minimap");
 
+  miniCanvas.width = minimap.width;
+  miniCanvas.height = minimap.height;
+
+  miniCtx = miniCanvas.getContext("2d");
+
+  miniCanvas.style.border = 'solid black 2px';
+  miniCanvas.style.backgroundColor = 'rgba(0,0,0,1)';
+
+
+  loadSnakes(5);
 
   draw();
 
@@ -75,6 +97,10 @@ function draw(){
   }
 
   context.restore();
+
+  miniCtx.clearRect(0,0, canvas.width, canvas.height);
+
+  miniCtx.drawImage(canvas, -400, -300, 800, 600, 0,0, minimap.width, minimap.height);
 
 }
 
