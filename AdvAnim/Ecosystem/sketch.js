@@ -1,6 +1,7 @@
 addEventListener("load", setup);
 window.addEventListener("collide", newPS);
-window.addEventListener("orbiter", addNewPlanet)
+window.addEventListener("orbiter", addNewPlanet);
+addEventListener("keydown", moveCanvas);
 
 var canvas;
 var context;
@@ -26,16 +27,47 @@ var wallRepulsion = 0;
 var redFlock;
 var blueFlock;
 
+var canvasWidth = 800;
+var canvasHeight = 600;
+
+var canvasX = -400;   // where the origin is
+var canvasY = -300;
+
+var miniCtx;
+var miniCanvas;
+
+var world =
+{
+  width: 4000,
+  height: 3000,
+};
+
+var minimap = // Object to draw minimap
+{
+    width: world.width / 10,
+    height: world.height / 10,
+};
+
 function setup(){
   canvas = document.getElementById("cnv");
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
 
   context = canvas.getContext("2d");
 
   canvas.style.border = 'solid black 2px';
   canvas.style.backgroundColor = 'rgba(0,0,0,1)';
+
+  miniCanvas = document.getElementById("minimap");
+
+  miniCanvas.width = minimap.width;
+  miniCanvas.height = minimap.height;
+
+  miniCtx = miniCanvas.getContext("2d");
+
+  miniCanvas.style.border = 'solid black 2px';
+  miniCanvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
   loadSnakes(5);
 
@@ -58,21 +90,43 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  for(let i = 0; i < particleSystems.length; i++){
+  // for(let i = 0; i < particleSystems.length; i++){
+  //
+  //   if (!particleSystems[i].isDead()) {
+  //     particleSystems[i].run();
+  //
+  //   } else {
+  //     particleSystems.splice(i, 1);
+  //   }
+  //
+  // }
 
-    if (!particleSystems[i].isDead()) {
-      particleSystems[i].run();
+  context.save();
 
-    } else {
-      particleSystems.splice(i, 1);
-    }
+  context.translate(-canvasX, -canvasY);
 
-  }
+  //axis lines
+  context.beginPath();
+  context.moveTo(-2000,0);
+  context.lineTo(2000,0);
+  context.moveTo(0,-1500);
+  context.lineTo(0,1500);
+  context.strokeStyle = 'red';
+  context.lineWidth = 2;
+  context.stroke();
+
+//boundary lines
+  context.beginPath();
+  context.rect(-2000,-1500, 4000, 3000);
+  context.strokeStyle = 'blue';
+  context.lineWidth = 2;
+  context.stroke();
 
   for(let i = 0; i<suns.length; i++){
 
     for(let j = 0; j<planets.length;j++){
-      planets[j].run();
+      planets[j].update();
+      planets[j].render(context)
       planets[j].orbit(suns[i]);
       planets[j].connect(suns[i]);
 
@@ -80,7 +134,9 @@ function draw(){
 
     for(let j = 0; j<ships.length; j++){
 
-      ships[j].run();
+      ships[j].update();
+
+      ships[j].render(context);
 
       ships[j].attract(suns[i]);
 
@@ -90,14 +146,55 @@ function draw(){
 
     for(let j = 0; j < snakes.length; j++){
 
-      snakes[j].run();
-
-      snakes[j].attract(suns[i]);
+      snakes[j].updateSegments();
+      snakes[j].render(context);
+      snakes[j].checkEdges();
     }
 
 
-    suns[i].run();
+    suns[i].update();
+    suns[i].render(context);
+    suns[i].checkEdges();
   }
+
+  context.restore();
+
+
+  //begin minimap
+
+  miniCtx.clearRect(0,0, canvas.width, canvas.height);
+
+  miniCtx.save();
+  miniCtx.scale(miniCanvas.width/world.width, miniCanvas.height/world.height);
+  miniCtx.translate(world.width/2, world.height/2);
+
+  for(let i = 0; i < snakes.length; i++){
+    snakes[i].render(miniCtx);
+  }
+
+  for(let i = 0; i<ships.length; i++){
+    ships[i].update();
+    ships[i].render(miniCtx);
+  }
+
+//minimap axes
+  miniCtx.beginPath();
+  miniCtx.moveTo(-2000,0);
+  miniCtx.lineTo(2000,0);
+  miniCtx.moveTo(0,-1500);
+  miniCtx.lineTo(0,1500);
+  miniCtx.strokeStyle = 'red';
+  miniCtx.lineWidth = 20;
+  miniCtx.stroke();
+
+//canvas outline
+  miniCtx.beginPath();
+  miniCtx.rect(canvasX, canvasY, canvas.width, canvas.height);
+  miniCtx.strokeStyle = 'blue';
+  miniCtx.lineWidth = 20;
+  miniCtx.stroke();
+
+  miniCtx.restore();
 
   redFlock.run();
 
@@ -172,4 +269,27 @@ function loadBlueFlock(n){
     let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'blue', 100);
     blueFlock.addBlueBoid(b);
   }
+}
+
+function moveCanvas(keyPressed){
+
+  var canvasMovementRate = 5;
+
+  if(keyPressed.code === "KeyD"){
+    canvasX += canvasMovementRate;
+  }
+
+  if(keyPressed.code === "KeyA"){
+    canvasX -= canvasMovementRate;
+  }
+
+  if(keyPressed.code === "KeyS"){
+    canvasY += canvasMovementRate;
+  }
+
+  if(keyPressed.code === "KeyW"){
+    canvasY -= canvasMovementRate;
+  }
+
+  console.log(keyPressed);
 }

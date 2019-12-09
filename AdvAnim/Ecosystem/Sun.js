@@ -10,7 +10,7 @@ function Sun(x, y, rad, hue, vx, vy){
 
 
 
-  this.render = function() {
+  this.render = function(context) {
 
       this.hue++;
 

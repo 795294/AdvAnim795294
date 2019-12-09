@@ -7,7 +7,7 @@ function Particle(x, y, vx, vy, ax, ay, rad, clr){
 
   this.lifespan = Math.random()*1;
 
-this.render = function(){
+this.render = function(context){
 
   context.strokeStyle = 'rgba(255,255,255,'+this.lifespan+')';
   context.fillStyle = 'rgba(255,255,255,'+this.lifespan+')';

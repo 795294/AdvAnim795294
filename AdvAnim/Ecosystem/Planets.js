@@ -8,7 +8,7 @@ function Planet(x, y, rad, or, hue){
   this.aVel = Math.random()*0.01;
   this.orbitRadiusChange = 0.5;
 
-  this.render = function() {
+  this.render = function(context) {
 
       this.hue += 0.1;
 

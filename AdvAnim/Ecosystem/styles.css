@@ -35,3 +35,10 @@ body{
   background: #42f2f5;
   cursor: pointer;
 }
+
+.minimap-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 99999;
+}

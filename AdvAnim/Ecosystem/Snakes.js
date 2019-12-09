@@ -12,7 +12,7 @@ function Snake(x, y, vx, vy, radius){
 
   this.transparency = 1;
 
-  this.render = function() {
+  this.render = function(context) {
 
     context.strokeStyle = 'rgba(255,0,255,'+this.transparency+')';
     context.fillStyle = 'rgba(255,0,255,'+this.transparency+')';
