@@ -4,6 +4,9 @@ addEventListener("keydown", moveCanvas);
 var canvas;
 var context;
 
+var worldCanvas;
+var worldContext;
+
 let snakes = [];
 
 var canvasWidth = 800;
@@ -29,6 +32,14 @@ var minimap = // Object to draw minimap
 
 
 function setup(){
+
+  worldCanvas = document.getElementById("world");
+
+  worldCanvas.width = world.width;
+  worldCanvas.height= world.height;
+
+  worldContext = worldCanvas.getContext("2d");
+
   canvas = document.getElementById("cnv");
 
   canvas.width = canvasWidth;
@@ -60,6 +71,8 @@ function draw(){
   requestAnimationFrame(draw);
 
   context.clearRect(0,0, canvas.width, canvas.height);
+
+  worldContext.clearRect(0,0, world.width, world.height);
 
   context.save();
 
@@ -96,11 +109,13 @@ function draw(){
     snakes[i].run();
   }
 
+  context.drawImage(worldCanvas, 0, 0);
+
   context.restore();
 
   miniCtx.clearRect(0,0, canvas.width, canvas.height);
 
-  miniCtx.drawImage(canvas, -400, -300, 800, 600, 0,0, minimap.width, minimap.height);
+  miniCtx.drawImage(worldCanvas, 0, 0, canvas.width, canvas.height);
 
 }
 
@@ -116,26 +131,20 @@ function moveCanvas(keyPressed){
 
   var canvasMovementRate = 5;
 
-  if(keyPressed.code === "ArrowRight"){
+  if(keyPressed.code === "KeyD"){
     canvasX += canvasMovementRate;
   }
 
-  if(keyPressed.code === "ArrowLeft"){
+  if(keyPressed.code === "KeyA"){
     canvasX -= canvasMovementRate;
   }
 
-  if(keyPressed.code === "ArrowDown"){
+  if(keyPressed.code === "KeyS"){
     canvasY += canvasMovementRate;
   }
 
-  if(keyPressed.code === "ArrowUp"){
+  if(keyPressed.code === "KeyW"){
     canvasY -= canvasMovementRate;
-  }
-
-  if(keyPressed.code === "ShiftRight"){
-    canvasMovementRate*10;
-  } else {
-    canvasMovementRate*1;
   }
 
   console.log(keyPressed);

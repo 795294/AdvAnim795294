@@ -14,27 +14,27 @@ function Snake(x, y, vx, vy, radius){
 
   this.render = function() {
 
-    context.strokeStyle = 'rgba(255,255,255,'+this.transparency+')';
-    context.fillStyle = 'rgba(255,255,255,'+this.transparency+')';
-    context.beginPath();
-    context.arc(this.segments[0].x, this.segments[0].y, this.radius, 0, Math.PI*2, false);
-    context.fill();
-    context.stroke();
+    worldContext.strokeStyle = 'rgba(255,255,255,'+this.transparency+')';
+    worldContext.fillStyle = 'rgba(255,255,255,'+this.transparency+')';
+    worldContext.beginPath();
+    worldContext.arc(this.segments[0].x, this.segments[0].y, this.radius, 0, Math.PI*2, false);
+    worldContext.fill();
+    worldContext.stroke();
 
     for(let i = 1; i < this.segments.length; i++){
 
-      context.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
-      context.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
+      worldContext.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
+      worldContext.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.1)+')';
 
-      context.lineWidth = this.lineWidth-(i*2.75);
+      worldContext.lineWidth = this.lineWidth-(i*2.75);
 
-      context.lineCap = 'round';
+      worldContext.lineCap = 'round';
 
-      context.beginPath();
-      context.moveTo(this.segments[i-1].x, this.segments[i-1].y);
-      context.lineTo(this.segments[i].x, this.segments[i].y);
-      context.fill();
-      context.stroke();
+      worldContext.beginPath();
+      worldContext.moveTo(this.segments[i-1].x, this.segments[i-1].y);
+      worldContext.lineTo(this.segments[i].x, this.segments[i].y);
+      worldContext.fill();
+      worldContext.stroke();
 
     }
 
