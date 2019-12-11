@@ -77,9 +77,9 @@ function setup(){
 
   loadShips(20);
 
-  loadRedFlock(1000);
+  loadRedFlock(500);
 
-  loadBlueFlock(1000);
+  loadBlueFlock(500);
 
   draw();
 
@@ -111,38 +111,44 @@ function draw(){
   context.lineWidth = 2;
   context.stroke();
 
+  for(let i = 0; i<ships.length; i++){
+    ships[i].update();
+    ships[i].render(context);
+  }
+
+  for(let i = 0; i < snakes.length; i++){
+
+    snakes[i].updateSegments();
+    snakes[i].render(context);
+    snakes[i].checkEdges();
+  }
+
+  for(let i = 0; i<planets.length; i++){
+    planets[i].update();
+  }
+
   for(let i = 0; i<suns.length; i++){
 
     for(let j = 0; j<planets.length;j++){
-      planets[j].update();
       planets[j].render(context);
       planets[j].orbit(suns[i]);
-      planets[j].connect(suns[i]);
-
-      }
-
-    for(let j = 0; j<ships.length; j++){
-
-      ships[j].update();
-
-      ships[j].render(context);
-
-      ships[j].attract(suns[i]);
-
-      suns[i].checkCollision(ships[j]);
-
+      planets[j].connect(suns[i], context);
     }
 
-    for(let j = 0; j < snakes.length; j++){
-
-      snakes[j].updateSegments();
-      snakes[j].render(context);
-      snakes[j].checkEdges();
+    for(let j = 0; j<ships.length; j++){
+      ships[j].attract(suns[i]);
+      suns[i].checkCollision(ships[j]);
     }
 
     suns[i].render(context);
     suns[i].update();
     suns[i].checkEdges();
+
+    for(let j = 0; j<suns.length; j++){
+      if(suns[i] != suns[j]){
+        suns[i].repel(suns[j]);
+      }
+    }
   }
 
   for(let i = 0; i < particleSystems.length; i++){
@@ -174,18 +180,20 @@ function draw(){
 
   //re-render everything in minimap drawing context
 
+  for(let i = 0; i<ships.length; i++){
+    ships[i].render(miniCtx);
+  }
+
+  for(let i = 0; i < snakes.length; i++){
+    snakes[i].render(miniCtx);
+  }
+
   for(let i = 0; i<suns.length; i++){
 
     for(let j = 0; j<planets.length;j++){
       planets[j].render(miniCtx);
-      }
-
-    for(let j = 0; j<ships.length; j++){
-      ships[j].render(miniCtx);
-    }
-
-    for(let j = 0; j < snakes.length; j++){
-      snakes[j].render(miniCtx);
+      planets[j].orbit(suns[i]);
+      planets[j].connect(suns[i], miniCtx);
     }
 
     suns[i].render(miniCtx);
@@ -249,22 +257,21 @@ function loadSuns(numSuns){
   for(let i = 0; i<numSuns; i++){
 
     suns.push(new Sun((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2, 20, Math.random()*360, (Math.random()*1)-0.5, (Math.random()*1)-0.5));
-
   }
 }
 
-//x, y, rad, or, hue
+//x, y, rad, or, hue, angle, av
 function loadPlanets(numPlanetsPerSun){
   for(let i = 0; i < numPlanetsPerSun; i++){
 
-    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*50)+20, Math.random()*360));
+    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*70)+30, Math.random()*360, Math.random()*360, Math.random()*0.05));
 
   }
 }
 
-//x, y, rad, or, hue
+//x, y, rad, or, hue, angle, av
 function addNewPlanet(){
-    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*50)+20, Math.random()*360));
+    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*70)+30, Math.random()*360, Math.random()*360, Math.random()*0.05));
 }
 
 //x, y, vx, vy, ax, ay, hue

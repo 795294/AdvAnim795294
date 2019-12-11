@@ -74,6 +74,20 @@ function Sun(x, y, rad, hue, vx, vy){
 
   }
 
+  this.repel = function(suns){
+
+      var d = this.loc.distance(suns.loc);
+
+      if(d < 400){
+        var attractionForce = JSVector.addGetNew(suns.loc, this.loc);
+        attractionForce.normalize();
+        attractionForce.multiply(0.5);
+        this.vel.add(attractionForce);
+      }
+
+
+  }
+
 
 }
 

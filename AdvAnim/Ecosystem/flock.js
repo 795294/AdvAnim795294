@@ -13,7 +13,7 @@ function Flock(){
 
         count++;
 
-        if(count%20===0){
+        if(count%100===0){
           var newOrbiterEvent = new Event("orbiter");
           window.dispatchEvent(newOrbiterEvent);
         }

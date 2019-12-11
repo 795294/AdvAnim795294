@@ -1,12 +1,12 @@
-function Planet(x, y, rad, or, hue){
+function Planet(x, y, rad, or, hue, angle, av){
 
   this.loc = new JSVector(x,y);
   this.radius = rad;
   this.orbitRadius = or;
   this.hue = hue;
-  this.angle = Math.random()*360;
-  this.aVel = Math.random()*0.01;
-  this.orbitRadiusChange = 0.5;
+  this.angle = angle;
+  this.aVel = av;
+  this.orbitRadiusChange = 2;
 
   this.render = function(context) {
 
@@ -50,7 +50,7 @@ function Planet(x, y, rad, or, hue){
 
   }
 
-  this.connect = function(v2){
+  this.connect = function(v2, context){
     var d = this.loc.distance(v2.loc);
 
     if(d<=400){
@@ -67,9 +67,9 @@ function Planet(x, y, rad, or, hue){
   }
 
   this.changeOrbitRadius = function(){
-    if(this.orbitRadius > 300){
+    if(this.orbitRadius > 100){
       this.orbitRadiusChange *= -1;
-    }else if(this.orbitRadius < 100){
+    }else if(this.orbitRadius < 40){
       this.orbitRadiusChange *= -1;
     }
     this.orbitRadius += this.orbitRadiusChange;
