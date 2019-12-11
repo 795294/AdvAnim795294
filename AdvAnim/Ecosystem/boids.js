@@ -136,7 +136,7 @@ function Boid(x, y, type, oR){
   }
 
   this.checkEdges = function(){
-    if (this.loc.x < 100) {
+    if (this.loc.x < (-world.width/2)+100) {
       let desired = new JSVector(wallRepulsion,this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
@@ -144,7 +144,7 @@ function Boid(x, y, type, oR){
       this.applyForce(steer);
     }
 
-    if (this.loc.x > canvas.width - 100) {
+    if (this.loc.x > world.width/2 - 100) {
       let desired = new JSVector(-wallRepulsion,this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
@@ -152,7 +152,7 @@ function Boid(x, y, type, oR){
       this.applyForce(steer);
     }
 
-    if (this.loc.y < 100) {
+    if (this.loc.y < (-world.height/2)+100) {
       let desired = new JSVector(this.vel.x, wallRepulsion);
       let steer = JSVector.subGetNew(desired, this.vel);
 
@@ -160,7 +160,7 @@ function Boid(x, y, type, oR){
       this.applyForce(steer);
     }
 
-    if (this.loc.y > canvas.height - 100) {
+    if (this.loc.y > world.height/2 - 100) {
       let desired = new JSVector(this.vel.x, -wallRepulsion);
       let steer = JSVector.subGetNew(desired, this.vel);
 

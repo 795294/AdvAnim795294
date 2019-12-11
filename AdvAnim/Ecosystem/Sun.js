@@ -12,19 +12,19 @@ function Sun(x, y, rad, hue, vx, vy){
 
   this.render = function(context) {
 
+    context.strokeStyle = 'hsl('+ this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')';
+    context.fillStyle = 'hsl('+ this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')';
+    context.beginPath();
+
+    context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+    context.stroke();
+    context.fill();
+
       this.hue++;
 
       if(this.hue>360){
         hue = 0;
       }
-
-        context.strokeStyle = 'hsl('+ this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')'
-        context.fillStyle = 'hsl('+ this.hue + ',' + 100 + '%' + ',' + 50 + '%' +')'
-        context.beginPath();
-
-        context.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
-        context.stroke();
-        context.fill();
 
   }
 
@@ -33,8 +33,6 @@ function Sun(x, y, rad, hue, vx, vy){
       this.loc.add(this.vel);
 
       this.vel.limit(2);
-
-
 
   }
 
@@ -47,11 +45,11 @@ function Sun(x, y, rad, hue, vx, vy){
   }
 
   this.checkEdges = function() {
-      if(this.loc.x + this.radius > canvas.width || this.loc.x - this.radius < 0){
+      if(this.loc.x + this.radius > world.width/2 || this.loc.x - this.radius < -world.width/2){
         this.vel.x = -this.vel.x;
       }
 
-      if(this.loc.y + this.radius > canvas.height || this.loc.y - this.radius < 0){
+      if(this.loc.y + this.radius > world.height/2 || this.loc.y - this.radius < -world.height/2){
         this.vel.y = -this.vel.y;
       }
   }

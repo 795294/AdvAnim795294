@@ -40,5 +40,14 @@ body{
     position: absolute;
     bottom: 0;
     right: 0;
+    margin-right: 50px;
+    margin-bottom: 50px;
+    z-index: 99999;
+}
+
+.canvas-container {
+    position: absolute;
+    left: 0;
+    margin-left: 100px;
     z-index: 99999;
 }

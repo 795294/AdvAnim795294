@@ -10,7 +10,7 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
   this.lifespan = 15;
 
 
-  this.update = function() {
+  this.update = function(context) {
     this.vel.add(this.acc);
     this.loc.add(this.vel);
 
@@ -18,7 +18,8 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
 
     for(var i = this.pArray.length-1; i >= 0; i--) {
       if (!this.pArray[i].isDead()) {
-        this.pArray[i].run();
+        this.pArray[i].update();
+        this.pArray[i].render(context);
 
       } else {
         this.pArray.splice(i, 1);
@@ -26,11 +27,6 @@ function ParticleSystem(x, y, vx, vy, ax, ay, rad, clr) {
     }
 
     this.lifespan -= 1;
-  }
-
-  this.run = function() {
-    this.update();
-
   }
 
   this.loadParticles = function(n){

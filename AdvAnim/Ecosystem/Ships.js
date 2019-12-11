@@ -5,7 +5,7 @@ function Ship(x, y, vx, vy, ax, ay, hue){
   this.acc = new JSVector(ax, ay)
   this.hue = hue;
 
-  this.render = function() {
+  this.render = function(context) {
 
       this.hue ++;
 
@@ -64,11 +64,11 @@ function Ship(x, y, vx, vy, ax, ay, hue){
   }
 
   this.checkEdges = function() {
-      if(this.loc.x > canvas.width || this.loc.x  < 0){
+      if(this.loc.x > world.width/2 || this.loc.x  < -world.width/2){
         this.vel.x = -this.vel.x;
       }
 
-      if(this.loc.y  > canvas.height || this.loc.y  < 0){
+      if(this.loc.y  > world.height/2 || this.loc.y  < -world.height/2){
         this.vel.y = -this.vel.y;
       }
   }

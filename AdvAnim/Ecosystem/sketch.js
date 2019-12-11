@@ -90,17 +90,6 @@ function draw(){
 
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  // for(let i = 0; i < particleSystems.length; i++){
-  //
-  //   if (!particleSystems[i].isDead()) {
-  //     particleSystems[i].run();
-  //
-  //   } else {
-  //     particleSystems.splice(i, 1);
-  //   }
-  //
-  // }
-
   context.save();
 
   context.translate(-canvasX, -canvasY);
@@ -126,7 +115,7 @@ function draw(){
 
     for(let j = 0; j<planets.length;j++){
       planets[j].update();
-      planets[j].render(context)
+      planets[j].render(context);
       planets[j].orbit(suns[i]);
       planets[j].connect(suns[i]);
 
@@ -151,11 +140,26 @@ function draw(){
       snakes[j].checkEdges();
     }
 
-
-    suns[i].update();
     suns[i].render(context);
+    suns[i].update();
     suns[i].checkEdges();
   }
+
+  for(let i = 0; i < particleSystems.length; i++){
+
+    if (!particleSystems[i].isDead()) {
+
+      particleSystems[i].update(context);
+
+    } else {
+      particleSystems.splice(i, 1);
+    }
+
+  }
+
+  redFlock.run();
+
+  blueFlock.run();
 
   context.restore();
 
@@ -168,13 +172,23 @@ function draw(){
   miniCtx.scale(miniCanvas.width/world.width, miniCanvas.height/world.height);
   miniCtx.translate(world.width/2, world.height/2);
 
-  for(let i = 0; i < snakes.length; i++){
-    snakes[i].render(miniCtx);
-  }
+  //re-render everything in minimap drawing context
 
-  for(let i = 0; i<ships.length; i++){
-    ships[i].update();
-    ships[i].render(miniCtx);
+  for(let i = 0; i<suns.length; i++){
+
+    for(let j = 0; j<planets.length;j++){
+      planets[j].render(miniCtx);
+      }
+
+    for(let j = 0; j<ships.length; j++){
+      ships[j].render(miniCtx);
+    }
+
+    for(let j = 0; j < snakes.length; j++){
+      snakes[j].render(miniCtx);
+    }
+
+    suns[i].render(miniCtx);
   }
 
 //minimap axes
@@ -184,21 +198,17 @@ function draw(){
   miniCtx.moveTo(0,-1500);
   miniCtx.lineTo(0,1500);
   miniCtx.strokeStyle = 'red';
-  miniCtx.lineWidth = 20;
+  miniCtx.lineWidth = 10;
   miniCtx.stroke();
 
 //canvas outline
   miniCtx.beginPath();
   miniCtx.rect(canvasX, canvasY, canvas.width, canvas.height);
-  miniCtx.strokeStyle = 'blue';
-  miniCtx.lineWidth = 20;
+  miniCtx.strokeStyle = 'green';
+  miniCtx.lineWidth = 10;
   miniCtx.stroke();
 
   miniCtx.restore();
-
-  redFlock.run();
-
-  blueFlock.run();
 
 
   separate = document.getElementById("sep").value;
@@ -247,7 +257,7 @@ function loadShips(n){
 
 function loadSnakes(numSnakes){
   for(let i = 0; i<numSnakes; i++){
-    snakes.push(new Snake(Math.random()*canvas.width, Math.random()*canvas.width, (Math.random()*10)-5, (Math.random()*10)-5, 10));
+    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*10)-5, (Math.random()*10)-5, 10));
 
     snakes[i].loadSegments(15);
   }
@@ -257,7 +267,7 @@ function loadRedFlock(n){
   redFlock = new Flock();
 
   for(let i = 0; i < n; i++) {
-    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'red', 100);
+    let b = new Boid(Math.random()*(world.width-70)+70,Math.random()*(world.height-70)+70, 'red', 100);
     redFlock.addRedBoid(b);
   }
 }
@@ -266,7 +276,7 @@ function loadBlueFlock(n){
   blueFlock = new Flock();
 
   for(let i = 0; i < n; i++) {
-    let b = new Boid(Math.random()*(canvas.width-70)+70,Math.random()*(canvas.height-70)+70, 'blue', 100);
+    let b = new Boid(Math.random()*(world.width-70)+70,Math.random()*(world.height-70)+70, 'blue', 100);
     blueFlock.addBlueBoid(b);
   }
 }
@@ -291,5 +301,4 @@ function moveCanvas(keyPressed){
     canvasY -= canvasMovementRate;
   }
 
-  console.log(keyPressed);
 }

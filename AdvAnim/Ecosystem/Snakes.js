@@ -79,11 +79,11 @@ function Snake(x, y, vx, vy, radius){
 
 
   this.checkEdges = function(){
-    if(this.segments[0].x + this.radius > canvas.width || this.segments[0].x - this.radius < 0){
+    if(this.segments[0].x + this.radius > world.width/2 || this.segments[0].x - this.radius < -world.width/2){
       this.velocities[0].x = -this.velocities[0].x;
     }
 
-    if(this.segments[0].y + this.radius > canvas.height || this.segments[0].y - this.radius < 0){
+    if(this.segments[0].y + this.radius > world.height/2 || this.segments[0].y - this.radius < world.height/2){
       this.velocities[0].y = -this.velocities[0].y;
     }
   }
