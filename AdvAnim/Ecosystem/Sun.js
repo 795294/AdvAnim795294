@@ -62,8 +62,8 @@ function Sun(x, y, rad, hue, vx, vy){
       collideLocx = this.loc.x;
       collideLocy = this.loc.y;
 
-      this.loc.x = Math.random()*((window.innerWidth-2*this.radius)+this.radius);
-      this.loc.y = Math.random()*((window.innerHeight-2*this.radius)+this.radius);
+      this.loc.x = Math.random()*(((Math.random()*world.width)-world.width/2)+this.radius);
+      this.loc.y = Math.random()*(((Math.random()*world.height)-world.height/2)+this.radius);
 
       this.vel.x = (Math.random()*1)-0.5;
       this.vel.y = (Math.random()*1)-0.5;

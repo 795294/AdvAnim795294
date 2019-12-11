@@ -6,16 +6,15 @@ function Snake(x, y, vx, vy, radius){
   this.mag = this.initialVelocity.getMagnitude();
   this.radius = radius;
   this.segments = [];
-  this.velocities = [];
 
-  this.lineWidth = 10;
+  this.lineWidth = 30;
 
   this.transparency = 1;
 
   this.render = function(context) {
 
-    context.strokeStyle = 'rgba(255,0,255,'+this.transparency+')';
-    context.fillStyle = 'rgba(255,0,255,'+this.transparency+')';
+    context.strokeStyle = 'rgba(0,0,255,'+this.transparency+')';
+    context.fillStyle = 'rgba(0,0,255,'+this.transparency+')';
     context.beginPath();
     context.arc(this.segments[0].x, this.segments[0].y, this.radius, 0, Math.PI*2, false);
     context.fill();
@@ -23,10 +22,10 @@ function Snake(x, y, vx, vy, radius){
 
     for(let i = 1; i < this.segments.length; i++){
 
-      context.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.02)+')';
-      context.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.02)+')';
+      context.strokeStyle = 'rgba(255,255,255,'+(this.transparency-i*0.05)+')';
+      context.fillStyle = 'rgba(255,255,255,'+(this.transparency-i*0.05)+')';
 
-      context.lineWidth = this.lineWidth-(i*0.6);
+      context.lineWidth = this.lineWidth-(i*1.5);
 
       context.lineCap = 'round';
 
@@ -53,16 +52,14 @@ function Snake(x, y, vx, vy, radius){
   this.loadSegments = function(n){
     for(let i = 0; i < n; i++){
       this.segments.push(new JSVector(this.loc.x, this.loc.y));
-
-      this.velocities.push(new JSVector(this.initialVelocity.x, this.initialVelocity.y));
     }
   }
 
   this.updateSegments = function(){
 
-    this.segments[0].add(this.velocities[0]);
+    this.segments[0].add(this.initialVelocity);
 
-    this.velocities[0].limit(2);
+    this.initialVelocity.limit(3);
 
     for(let i = 1; i < this.segments.length; i++){
       if(this.segments[i].distance(this.segments[i-1]) > this.radius){
@@ -80,28 +77,12 @@ function Snake(x, y, vx, vy, radius){
 
   this.checkEdges = function(){
     if(this.segments[0].x + this.radius > world.width/2 || this.segments[0].x - this.radius < -world.width/2){
-      this.velocities[0].x = -this.velocities[0].x;
+      this.initialVelocity.x = -this.initialVelocity.x;
     }
 
-    if(this.segments[0].y + this.radius > world.height/2 || this.segments[0].y - this.radius < world.height/2){
-      this.velocities[0].y = -this.velocities[0].y;
+    if(this.segments[0].y + this.radius > world.height/2 || this.segments[0].y - this.radius < -world.height/2){
+      this.initialVelocity.y = -this.initialVelocity.y;
     }
   }
-
-  this.attract = function(suns){
-
-      var d = this.loc.distance(suns.loc);
-
-      if(d < 300){
-        var attractionForce = JSVector.subGetNew(suns.loc, this.loc);
-        attractionForce.normalize();
-        attractionForce.multiply(0.5);
-        this.initialVelocity.add(attractionForce);
-      }
-
-
-  }
-
-
 
   }

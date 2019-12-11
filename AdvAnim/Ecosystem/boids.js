@@ -7,7 +7,7 @@ function Boid(x, y, type, oR){
   this.maxspeed = 3;
   this.maxforce = 0.1;
   this.type = type;
-  this.scale = 10;
+  this.scale = 5;
 
   this.planet = null;
 
@@ -214,7 +214,7 @@ function Boid(x, y, type, oR){
     }
 
   this.align = function(boids){
-    let neighbordist = 50;
+    let neighbordist = 200;
     let sum = new JSVector(0,0);
     let count = 0;
     for (let i = 0; i < boids.length; i++) {
@@ -238,7 +238,7 @@ function Boid(x, y, type, oR){
   }
 
   this.cohesion = function(boids){
-    let neighbordist = 50;
+    let neighbordist = 200;
 
     let sum = new JSVector(0,0);
 

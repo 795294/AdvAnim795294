@@ -1,6 +1,6 @@
 addEventListener("load", setup);
-window.addEventListener("collide", newPS);
-window.addEventListener("orbiter", addNewPlanet);
+addEventListener("collide", newPS);
+addEventListener("orbiter", addNewPlanet);
 addEventListener("keydown", moveCanvas);
 
 var canvas;
@@ -69,17 +69,17 @@ function setup(){
   miniCanvas.style.border = 'solid black 2px';
   miniCanvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
-  loadSnakes(5);
+  loadSnakes(20);
 
-  loadSuns(2);
+  loadSuns(10);
 
   loadPlanets(1);
 
-  loadShips(7);
+  loadShips(20);
 
-  loadRedFlock(500);
+  loadRedFlock(1000);
 
-  loadBlueFlock(500);
+  loadBlueFlock(1000);
 
   draw();
 
@@ -191,13 +191,31 @@ function draw(){
     suns[i].render(miniCtx);
   }
 
+  for(let i = 0; i< blueFlock.boidsBlue.length; i++){
+    miniCtx.beginPath();
+    miniCtx.strokeStyle = 'blue';
+    miniCtx.fillStyle = 'blue';
+    miniCtx.arc(blueFlock.boidsBlue[i].loc.x, blueFlock.boidsBlue[i].loc.y, 5, 0, Math.PI*2, true);
+    miniCtx.stroke();
+    miniCtx.fill();
+  }
+
+  for(let i = 0; i< redFlock.boidsRed.length; i++){
+    miniCtx.beginPath();
+    miniCtx.strokeStyle = 'red';
+    miniCtx.fillStyle = 'red';
+    miniCtx.arc(redFlock.boidsRed[i].loc.x, redFlock.boidsRed[i].loc.y, 5, 0, Math.PI*2, true);
+    miniCtx.stroke();
+    miniCtx.fill();
+  }
+
 //minimap axes
   miniCtx.beginPath();
   miniCtx.moveTo(-2000,0);
   miniCtx.lineTo(2000,0);
   miniCtx.moveTo(0,-1500);
   miniCtx.lineTo(0,1500);
-  miniCtx.strokeStyle = 'red';
+  miniCtx.strokeStyle = 'rgb(255, 133, 51)';
   miniCtx.lineWidth = 10;
   miniCtx.stroke();
 
@@ -226,40 +244,43 @@ function newPS(){
 
 }
 
-
+//x, y, rad, hue, vx, vy
 function loadSuns(numSuns){
   for(let i = 0; i<numSuns; i++){
 
-    suns.push(new Sun(Math.random()*(window.innerWidth-70)+70,Math.random()*(window.innerHeight-70)+70, 10, Math.random()*360, (Math.random()*1)-0.5, (Math.random()*1)-0.5));
+    suns.push(new Sun((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2, 20, Math.random()*360, (Math.random()*1)-0.5, (Math.random()*1)-0.5));
 
   }
 }
 
+//x, y, rad, or, hue
 function loadPlanets(numPlanetsPerSun){
   for(let i = 0; i < numPlanetsPerSun; i++){
 
-    planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*4)+2, (Math.random()*50)+20, Math.random()*360));
+    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*50)+20, Math.random()*360));
 
   }
 }
 
+//x, y, rad, or, hue
 function addNewPlanet(){
-    planets.push(new Planet(Math.random()*(window.innerWidth-30)+30,Math.random()*(window.innerHeight-30)+30,(Math.random()*4)+2, (Math.random()*50)+20, Math.random()*360));
+    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*50)+20, Math.random()*360));
 }
 
-
+//x, y, vx, vy, ax, ay, hue
 function loadShips(n){
   for(let i = 0; i<n; i++){
-    ships.push(new Ship(Math.random()*(window.innerWidth-70)+70,Math.random()*(window.innerHeight-70)+70, (Math.random()*4)-2, (Math.random()*4)-2, (Math.random()*0.1)-0.1, (Math.random()*0.1)-0.1, Math.random()*360));
+    ships.push(new Ship((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2, (Math.random()*4)-2, (Math.random()*4)-2, (Math.random()*0.1)-0.1, (Math.random()*0.1)-0.1, Math.random()*360));
 
   }
 }
 
+//x, y, vx, vy, radius
 function loadSnakes(numSnakes){
   for(let i = 0; i<numSnakes; i++){
-    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*10)-5, (Math.random()*10)-5, 10));
+    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*10)-5, (Math.random()*10)-5, 20));
 
-    snakes[i].loadSegments(15);
+    snakes[i].loadSegments(20);
   }
 }
 
@@ -267,7 +288,7 @@ function loadRedFlock(n){
   redFlock = new Flock();
 
   for(let i = 0; i < n; i++) {
-    let b = new Boid(Math.random()*(world.width-70)+70,Math.random()*(world.height-70)+70, 'red', 100);
+    let b = new Boid((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2, 'red', 100);
     redFlock.addRedBoid(b);
   }
 }
@@ -276,7 +297,7 @@ function loadBlueFlock(n){
   blueFlock = new Flock();
 
   for(let i = 0; i < n; i++) {
-    let b = new Boid(Math.random()*(world.width-70)+70,Math.random()*(world.height-70)+70, 'blue', 100);
+    let b = new Boid((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2, 'blue', 100);
     blueFlock.addBlueBoid(b);
   }
 }
