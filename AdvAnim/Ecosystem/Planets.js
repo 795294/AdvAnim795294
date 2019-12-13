@@ -67,9 +67,9 @@ function Planet(x, y, rad, or, hue, angle, av){
   }
 
   this.changeOrbitRadius = function(){
-    if(this.orbitRadius > 100){
+    if(this.orbitRadius > 80){
       this.orbitRadiusChange *= -1;
-    }else if(this.orbitRadius < 40){
+    }else if(this.orbitRadius < 20){
       this.orbitRadiusChange *= -1;
     }
     this.orbitRadius += this.orbitRadiusChange;

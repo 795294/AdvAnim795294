@@ -1,7 +1,7 @@
 function Flock(){
   this.boidsRed = [];
   this.boidsBlue = [];
-  var count = 0;
+  var count  = 0;
 
   this.run = function(){
     for(let i = 0; i< this.boidsRed.length; i++){
@@ -10,14 +10,6 @@ function Flock(){
         this.boidsRed[i].run(this.boidsRed);
       } else {
         this.boidsRed.splice(i,1);
-
-        count++;
-
-        if(count%100===0){
-          var newOrbiterEvent = new Event("orbiter");
-          window.dispatchEvent(newOrbiterEvent);
-        }
-
       }
     }
 
@@ -29,7 +21,7 @@ function Flock(){
 
         count++;
 
-        if(count%100===0){
+        if(count%20===0){
           var newOrbiterEvent = new Event("orbiter");
           window.dispatchEvent(newOrbiterEvent);
         }

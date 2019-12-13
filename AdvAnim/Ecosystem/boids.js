@@ -84,18 +84,30 @@ function Boid(x, y, type, oR){
 
   this.run = function(boids) {
 
-    this.checkOrbit();
+    if(this.type === 'blue'){
+      this.checkOrbit();
 
-    this.repel();
+      this.repel();
 
-    this.flock(boids);
-    this.render();
+      this.flock(boids);
+      this.render();
+    }
 
+    if(this.type === 'red'){
+
+      this.repel();
+
+      this.flock(boids);
+      this.render();
+    }
 
     if(!this.planet){
+
       this.update();
       this.checkEdges();
-    } else {
+
+    } else if(this.type === 'blue'){
+
       if(this.loc.distance(this.planet.loc) < this.orbRadius + this.planet.radius){
         context.lineWidth = 1;
         context.moveTo(this.planet.loc.x, this.planet.loc.y);
@@ -108,8 +120,6 @@ function Boid(x, y, type, oR){
 
       if(this.loc.distance(this.planet.loc) < this.planet.radius){
         this.isEaten = true;
-
-        this.eatCount++;
 
       }
     }
@@ -145,7 +155,7 @@ function Boid(x, y, type, oR){
     }
 
     if (this.loc.x > world.width/2 - 100) {
-      let desired = new JSVector(-wallRepulsion,this.vel.y);
+      let desired = new JSVector(-wallRepulsion, this.vel.y);
       let steer = JSVector.subGetNew(desired, this.vel);
 
       steer.limit(this.maxforce*1.5);

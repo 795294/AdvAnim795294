@@ -16,8 +16,14 @@ let enemies = [];
 
 let snakes = [];
 
+let ballsBlue = [];
+let ballsRed = [];
+
 var collideLocx;
 var collideLocy;
+
+var connectLocx;
+var connectLocy;
 
 var separate = 0;
 var alignment = 0;
@@ -77,9 +83,13 @@ function setup(){
 
   loadShips(20);
 
-  loadRedFlock(500);
+  loadRedFlock(700);
 
-  loadBlueFlock(500);
+  loadBlueFlock(700);
+
+  loadBlueBalls(10);
+
+  loadRedBalls(10);
 
   draw();
 
@@ -104,12 +114,24 @@ function draw(){
   context.lineWidth = 2;
   context.stroke();
 
-//boundary lines
+  //boundary lines
   context.beginPath();
   context.rect(-2000,-1500, 4000, 3000);
   context.strokeStyle = 'blue';
   context.lineWidth = 2;
   context.stroke();
+
+  for(let i = 0; i<ballsRed.length; i++){
+    ballsRed[i].update();
+    ballsRed[i].render(context);
+    ballsRed[i].checkEdges();
+  }
+
+  for(let i = 0; i<ballsBlue.length; i++){
+    ballsBlue[i].update();
+    ballsBlue[i].render(context);
+    ballsBlue[i].checkEdges();
+  }
 
   for(let i = 0; i<ships.length; i++){
     ships[i].update();
@@ -143,12 +165,6 @@ function draw(){
     suns[i].render(context);
     suns[i].update();
     suns[i].checkEdges();
-
-    for(let j = 0; j<suns.length; j++){
-      if(suns[i] != suns[j]){
-        suns[i].repel(suns[j]);
-      }
-    }
   }
 
   for(let i = 0; i < particleSystems.length; i++){
@@ -264,14 +280,14 @@ function loadSuns(numSuns){
 function loadPlanets(numPlanetsPerSun){
   for(let i = 0; i < numPlanetsPerSun; i++){
 
-    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*70)+30, Math.random()*360, Math.random()*360, Math.random()*0.05));
+    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*50)+30, Math.random()*360, Math.random()*360, Math.random()*0.05));
 
   }
 }
 
 //x, y, rad, or, hue, angle, av
 function addNewPlanet(){
-    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*70)+30, Math.random()*360, Math.random()*360, Math.random()*0.05));
+    planets.push(new Planet((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2,(Math.random()*10)+5, (Math.random()*50)+30, Math.random()*360, Math.random()*360, Math.random()*0.05));
 }
 
 //x, y, vx, vy, ax, ay, hue
@@ -306,6 +322,22 @@ function loadBlueFlock(n){
   for(let i = 0; i < n; i++) {
     let b = new Boid((Math.random()*world.width)-world.width/2,(Math.random()*world.height)-world.height/2, 'blue', 100);
     blueFlock.addBlueBoid(b);
+  }
+}
+
+//x, y, rad, vx, vy, ax, ay, clr
+function loadBlueBalls(numBalls){
+  for(let i = 0; i<numBalls; i++){
+    ballsBlue.push(new Ball((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, 30, (Math.random()*10)-5, (Math.random()*10)-5, 'blue'));
+
+  }
+}
+
+function loadRedBalls(numBalls){
+
+  for(let i = 0; i<numBalls; i++){
+    ballsRed.push(new Ball((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, 30, (Math.random()*10)-5, (Math.random()*10)-5, 'red'));
+
   }
 }
 

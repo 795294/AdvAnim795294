@@ -38,7 +38,7 @@ function Ship(x, y, vx, vy, ax, ay, hue){
 
       this.loc.add(this.vel);
 
-      this.vel.limit(1);
+      this.vel.limit(4);
   }
 
   this.run = function() {
