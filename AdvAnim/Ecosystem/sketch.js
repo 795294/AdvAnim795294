@@ -2,6 +2,8 @@ addEventListener("load", setup);
 addEventListener("collide", newPS);
 addEventListener("orbiter", addNewPlanet);
 addEventListener("keydown", moveCanvas);
+addEventListener("blue", addBlueBoids);
+addEventListener("red", addRedBoids);
 
 var canvas;
 var context;
@@ -41,6 +43,8 @@ var canvasY = -300;
 
 var miniCtx;
 var miniCanvas;
+
+var count = 0;
 
 var world =
 {
@@ -125,12 +129,24 @@ function draw(){
     ballsRed[i].update();
     ballsRed[i].render(context);
     ballsRed[i].checkEdges();
+
+    for(let j = 0; j< ballsRed.length; j++){
+      if(ballsRed[i] != ballsRed[j]){
+        ballsRed[i].connect(ballsRed[j], context);
+      }
+    }
   }
 
   for(let i = 0; i<ballsBlue.length; i++){
     ballsBlue[i].update();
     ballsBlue[i].render(context);
     ballsBlue[i].checkEdges();
+
+    for(let j = 0; j< ballsBlue.length; j++){
+      if(ballsBlue[i] != ballsBlue[j]){
+        ballsBlue[i].connect(ballsBlue[j], context);
+      }
+    }
   }
 
   for(let i = 0; i<ships.length; i++){
@@ -195,6 +211,26 @@ function draw(){
   miniCtx.translate(world.width/2, world.height/2);
 
   //re-render everything in minimap drawing context
+
+  for(let i = 0; i<ballsRed.length; i++){
+    ballsRed[i].render(miniCtx);
+
+    for(let j = 0; j< ballsRed.length; j++){
+      if(ballsRed[i] != ballsRed[j]){
+        ballsRed[i].connect(ballsRed[j], miniCtx);
+      }
+    }
+  }
+
+  for(let i = 0; i<ballsBlue.length; i++){
+    ballsBlue[i].render(miniCtx);
+
+    for(let j = 0; j< ballsBlue.length; j++){
+      if(ballsBlue[i] != ballsBlue[j]){
+        ballsBlue[i].connect(ballsBlue[j], miniCtx);
+      }
+    }
+  }
 
   for(let i = 0; i<ships.length; i++){
     ships[i].render(miniCtx);
@@ -339,6 +375,26 @@ function loadRedBalls(numBalls){
     ballsRed.push(new Ball((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, 30, (Math.random()*10)-5, (Math.random()*10)-5, 'red'));
 
   }
+}
+
+function addRedBoids(){
+    let b = new Boid(connectLocx, connectLocy, 'red', 100);
+
+    count++;
+
+    if(count%10 === 0){
+      redFlock.addRedBoid(b);
+    }
+}
+
+function addBlueBoids(){
+    let b = new Boid(connectLocx, connectLocy, 'blue', 100);
+
+    count++;
+
+    if(count%10 === 0){
+      blueFlock.addBlueBoid(b);
+    }
 }
 
 function moveCanvas(keyPressed){

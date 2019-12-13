@@ -36,7 +36,7 @@ function Ball(x, y, rad, vx, vy, type){
   this.update = function() {
 
     this.loc.add(this.vel);
-    this.vel.limit(4);
+    this.vel.limit(5);
 
   }
 
@@ -59,25 +59,35 @@ function Ball(x, y, rad, vx, vy, type){
       }
   }
 
-  this.connect = function(v2){
+  this.connect = function(v2, context){
     var d = this.loc.distance(v2.loc);
 
-    if(d<100){
+    if(d<200){
 
-      collideLocx = this.loc.x;
-      collideLocy = this.loc.y;
+      connectLocx = (this.loc.x+v2.loc.x)/2;
+      connectLocy = (this.loc.y+v2.loc.y)/2;
+
+      context.beginPath();
 
       context.lineWidth = 2;
-      context.strokeStyle = 'rgb(0,100,100)';
+      context.strokeStyle = 'rgb(255,255,0)';
       context.moveTo(this.loc.x, this.loc.y);
       context.lineTo(v2.loc.x, v2.loc.y);
+
       context.stroke();
 
-      var connectEvent = new Event("connect");
-      window.dispatchEvent(connectEvent);
+      if(this.type === 'blue'){
+        var connectEvent = new Event("blue");
+        window.dispatchEvent(connectEvent);
+      }
+
+      if(this.type === 'red'){
+        var connectEvent = new Event("red");
+        window.dispatchEvent(connectEvent);
+      }
+
 
     }
-
 
   }
 
