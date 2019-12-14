@@ -45,6 +45,7 @@ var miniCtx;
 var miniCanvas;
 
 var count = 0;
+var wanderCount = 0;
 
 var world =
 {
@@ -154,7 +155,15 @@ function draw(){
     ships[i].render(context);
   }
 
+  wanderCount++;
+
+  console.log(wanderCount);
+
   for(let i = 0; i < snakes.length; i++){
+
+    if(wanderCount > 300 && wanderCount%50 === 0){
+      snakes[i].wander();
+    }
 
     snakes[i].updateSegments();
     snakes[i].render(context);
@@ -337,7 +346,7 @@ function loadShips(n){
 //x, y, vx, vy, radius
 function loadSnakes(numSnakes){
   for(let i = 0; i<numSnakes; i++){
-    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*10)-5, (Math.random()*10)-5, 20));
+    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*20)-10, (Math.random()*20)-10, 20));
 
     snakes[i].loadSegments(20);
   }
