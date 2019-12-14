@@ -5,6 +5,14 @@ function Ship(x, y, vx, vy, ax, ay, hue){
   this.acc = new JSVector(ax, ay)
   this.hue = hue;
 
+  this.r = 3.0;
+  this.wanderRadius = 200;
+
+  this.maxforce = 4;
+  this.maxspeed = 2;
+
+  this.scale = 5;
+
   this.render = function(context) {
 
       this.hue ++;
@@ -38,7 +46,11 @@ function Ship(x, y, vx, vy, ax, ay, hue){
 
       this.loc.add(this.vel);
 
-      this.vel.limit(4);
+      this.vel.limit(this.maxspeed);
+
+      this.vel.add(this.acc);
+
+      this.acc.multiply(0);
   }
 
   this.run = function() {
@@ -53,7 +65,7 @@ function Ship(x, y, vx, vy, ax, ay, hue){
 
       var d = this.loc.distance(suns.loc);
 
-      if(d < 300){
+      if(d < 500){
         var attractionForce = JSVector.subGetNew(suns.loc, this.loc);
         attractionForce.normalize();
         attractionForce.multiply(0.5);
@@ -71,5 +83,25 @@ function Ship(x, y, vx, vy, ax, ay, hue){
       if(this.loc.y  > world.height/2 || this.loc.y  < -world.height/2){
         this.vel.y = -this.vel.y;
       }
+  }
+
+  this.wander = function() {
+
+    let angle = Math.random()*(Math.PI*2);
+    let newX = this.wanderRadius*this.scale * Math.cos(angle);
+    let newY = this.wanderRadius*this.scale * Math.sin(angle);
+    let targetLoc = new JSVector(newX, newY);
+
+    let desired = JSVector.subGetNew(targetLoc, this.loc);
+
+    let steer = JSVector.subGetNew(desired, this.vel);
+    steer.limit(this.maxforce);
+    this.applyForce(steer);
+
+  }
+
+  this.applyForce = function(force) {
+
+    this.acc.add(force);
   }
 }

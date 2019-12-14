@@ -95,8 +95,6 @@ function Boid(x, y, type, oR){
 
     if(this.type === 'red'){
 
-      this.repel();
-
       this.flock(boids);
       this.render();
     }
@@ -327,6 +325,7 @@ function Boid(x, y, type, oR){
 
 
   }
+
 
 
 }

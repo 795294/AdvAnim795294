@@ -27,6 +27,8 @@ var collideLocy;
 var connectLocx;
 var connectLocy;
 
+var boidCollision = new JSVector(0, 0);
+
 var separate = 0;
 var alignment = 0;
 var cohesion = 0;
@@ -88,9 +90,9 @@ function setup(){
 
   loadShips(20);
 
-  loadRedFlock(700);
+  loadRedFlock(500);
 
-  loadBlueFlock(700);
+  loadBlueFlock(500);
 
   loadBlueBalls(10);
 
@@ -157,14 +159,7 @@ function draw(){
 
   wanderCount++;
 
-  console.log(wanderCount);
-
   for(let i = 0; i < snakes.length; i++){
-
-    if(wanderCount > 300 && wanderCount%50 === 0){
-      snakes[i].wander();
-    }
-
     snakes[i].updateSegments();
     snakes[i].render(context);
     snakes[i].checkEdges();
@@ -185,6 +180,10 @@ function draw(){
     for(let j = 0; j<ships.length; j++){
       ships[j].attract(suns[i]);
       suns[i].checkCollision(ships[j]);
+
+      if(ships[j].loc.distance(suns[i].loc) > 500 && wanderCount%400 === 0){
+        ships[i].wander();
+      }
     }
 
     suns[i].render(context);

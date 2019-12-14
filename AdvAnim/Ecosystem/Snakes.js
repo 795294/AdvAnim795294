@@ -13,12 +13,6 @@ function Snake(x, y, vx, vy, radius){
 
   this.transparency = 1;
 
-  this.r = 3.0;
-  this.wanderRadius = 200;
-
-  this.maxforce = 4;
-  this.maxspeed = 2;
-
   this.render = function(context) {
 
     context.strokeStyle = 'rgba(0,0,255,'+this.transparency+')';
@@ -38,8 +32,8 @@ function Snake(x, y, vx, vy, radius){
       context.lineCap = 'round';
 
       context.beginPath();
-      context.moveTo(this.segments[i-1].x, this.segments[i-1].y);
-      context.lineTo(this.segments[i].x, this.segments[i].y);
+      context.moveTo(this.segments[i].x, this.segments[i].y);
+      context.lineTo(this.segments[i-1].x, this.segments[i-1].y);
       context.fill();
       context.stroke();
 
@@ -67,15 +61,10 @@ function Snake(x, y, vx, vy, radius){
 
   this.updateSegments = function(){
 
-    this.initialVelocity.add(this.acc);
-
-    this.acc.multiply(0);
-
     this.segments[0].add(this.initialVelocity);
 
-    this.initialVelocity.limit(this.maxspeed);
-
     for(let i = 1; i < this.segments.length; i++){
+
       if(this.segments[i].distance(this.segments[i-1]) > this.radius){
 
         this.newVector = JSVector.subGetNew(this.segments[i], this.segments[i-1]);
@@ -97,26 +86,6 @@ function Snake(x, y, vx, vy, radius){
     if(this.segments[0].y + this.radius > world.height/2 || this.segments[0].y - this.radius < -world.height/2){
       this.initialVelocity.y = -this.initialVelocity.y;
     }
-  }
-
-  this.applyForce = function(force) {
-
-    this.acc.add(force);
-  }
-
-  this.wander = function() { //from nature of code
-
-    let angle = Math.random()*(Math.PI*2);
-    let newX = this.wanderRadius*2 * Math.cos(angle);
-    let newY = this.wanderRadius*2 * Math.sin(angle);
-    let targetLoc = new JSVector(newX, newY);
-
-    let desired = JSVector.subGetNew(targetLoc, this.loc);
-
-    let steer = JSVector.subGetNew(desired, this.initialVelocity);
-    steer.limit(this.maxforce);
-    this.applyForce(steer);
-
   }
 
 }

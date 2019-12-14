@@ -74,6 +74,8 @@ function Sun(x, y, rad, hue, vx, vy){
 
   }
 
+}
+
   this.repel = function(suns){
 
       var d = this.loc.distance(suns.loc);
@@ -87,8 +89,5 @@ function Sun(x, y, rad, hue, vx, vy){
 
 
   }
-
-
-}
 
 }
