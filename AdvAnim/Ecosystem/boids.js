@@ -95,8 +95,15 @@ function Boid(x, y, type, oR){
 
     if(this.type === 'red'){
 
+      this.repel();
+
       this.flock(boids);
       this.render();
+
+      if(this.isColliding()){
+        this.isEaten = true;
+      }
+
     }
 
     if(!this.planet){
@@ -309,6 +316,7 @@ function Boid(x, y, type, oR){
 
   this.repel = function(){
 
+    if(this.type === 'blue'){
       for(let i = 0; i < suns.length; i++){
 
         var d = this.loc.distance(suns[i].loc);
@@ -322,10 +330,42 @@ function Boid(x, y, type, oR){
 
         }
       }
+    }
+
+    if(this.type === 'red'){
+      for(let i = 0; i < snakes.length; i++){
+
+        var d = this.loc.distance(snakes[i].segments[0]);
+
+        if(d < snakes[i].radius+100){
+          var repulsionForce = JSVector.addGetNew(snakes[i].segments[0], this.loc);
+          repulsionForce.normalize();
+          repulsionForce.multiply(0.5);
+          this.vel.add(repulsionForce);
 
 
+        }
+      }
+    }
   }
 
+
+  this.isColliding = function(){
+
+    for(let i = 0; i < snakes.length; i++){
+
+      var d = this.loc.distance(snakes[i].segments[0]);
+
+      if(d < 40){
+
+        snakes[i].hue+=1;
+
+        return true;
+
+      }
+    }
+    return false;
+  }
 
 
 }

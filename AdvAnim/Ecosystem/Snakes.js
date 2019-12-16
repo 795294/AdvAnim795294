@@ -1,8 +1,9 @@
-function Snake(x, y, vx, vy, radius){
+function Snake(x, y, vx, vy, radius, hue){
   this.loc = new JSVector(x, y);
   this.initialVelocity = new JSVector(vx, vy);
   this.newVector = new JSVector();
   this.acc = new JSVector(0,0);
+  this.hue = hue;
 
   this.mag = this.initialVelocity.getMagnitude();
   this.radius = radius;
@@ -15,8 +16,8 @@ function Snake(x, y, vx, vy, radius){
 
   this.render = function(context) {
 
-    context.strokeStyle = 'rgba(0,0,255,'+this.transparency+')';
-    context.fillStyle = 'rgba(0,0,255,'+this.transparency+')';
+    context.strokeStyle = 'hsla('+ -this.hue + ',' + 100 + '%' + ',' + 50 + '%'+ ',' + this.transparency+')';
+    context.fillStyle = 'hsla('+ -this.hue + ',' + 100 + '%' + ',' + 50 + '%'+ ',' + this.transparency+')';
     context.beginPath();
     context.arc(this.segments[0].x, this.segments[0].y, this.radius, 0, Math.PI*2, false);
     context.fill();

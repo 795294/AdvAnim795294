@@ -342,10 +342,10 @@ function loadShips(n){
   }
 }
 
-//x, y, vx, vy, radius
+//x, y, vx, vy, radius, hue
 function loadSnakes(numSnakes){
   for(let i = 0; i<numSnakes; i++){
-    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*20)-10, (Math.random()*20)-10, 20));
+    snakes.push(new Snake((Math.random()*world.width)-world.width/2, (Math.random()*world.height)-world.height/2, (Math.random()*20)-10, (Math.random()*20)-10, 20, 0));
 
     snakes[i].loadSegments(20);
   }
