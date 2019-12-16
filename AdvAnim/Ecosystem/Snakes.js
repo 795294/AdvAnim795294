@@ -14,6 +14,14 @@ function Snake(x, y, vx, vy, radius, hue){
 
   this.transparency = 1;
 
+  this.r = 3.0;
+  this.wanderRadius = 200;
+
+  this.maxforce = 4;
+  this.maxspeed = 2;
+
+  this.scale = 5;
+
   this.render = function(context) {
 
     context.strokeStyle = 'hsla('+ -this.hue + ',' + 100 + '%' + ',' + 50 + '%'+ ',' + this.transparency+')';
@@ -64,6 +72,12 @@ function Snake(x, y, vx, vy, radius, hue){
 
     this.segments[0].add(this.initialVelocity);
 
+    this.initialVelocity.limit(this.maxspeed);
+
+    this.initialVelocity.add(this.acc);
+
+    this.acc.multiply(0);
+
     for(let i = 1; i < this.segments.length; i++){
 
       if(this.segments[i].distance(this.segments[i-1]) > this.radius){
@@ -87,6 +101,28 @@ function Snake(x, y, vx, vy, radius, hue){
     if(this.segments[0].y + this.radius > world.height/2 || this.segments[0].y - this.radius < -world.height/2){
       this.initialVelocity.y = -this.initialVelocity.y;
     }
+  }
+
+  this.wander = function() {
+
+    let angle = Math.random()*(Math.PI*2);
+    let newX = this.wanderRadius*this.scale * Math.cos(angle);
+    let newY = this.wanderRadius*this.scale * Math.sin(angle);
+    let targetLoc = new JSVector(newX, newY);
+
+    let desired = JSVector.subGetNew(targetLoc, this.segments[0]);
+
+    let steer = JSVector.subGetNew(desired, this.initialVelocity);
+    steer.limit(this.maxforce);
+    this.applyForce(steer);
+
+    console.log("wander")
+
+  }
+
+  this.applyForce = function(force) {
+
+    this.acc.add(force);
   }
 
 }
