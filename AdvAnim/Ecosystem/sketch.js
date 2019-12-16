@@ -164,7 +164,7 @@ function draw(){
     snakes[i].render(context);
     snakes[i].checkEdges();
 
-    snakes[i].wander();
+    //snakes[i].wander();
   }
 
   for(let i = 0; i<planets.length; i++){
