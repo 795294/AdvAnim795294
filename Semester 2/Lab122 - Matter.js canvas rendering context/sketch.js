@@ -9,6 +9,7 @@ var Bodies;
 var Composite;
 
 var engine;
+var box;
 
 function setup(){
   canvas = document.getElementById("cnv");
@@ -28,14 +29,18 @@ function setup(){
 
   engine = Engine.create();
 
-  World.add(engine.world, [
-    //walls
-    Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
-    Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
-    Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-    Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+  loadBoxes();
 
-  ]);
+  box = new Box(Math.random()*(770-30)+30,Math.random()*(770-30)+30,70,(Math.random()*2)-1,(Math.random()*2)-1,0,0);
+
+  // World.add(engine.world, [
+  //   //walls
+  //   Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
+  //   Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
+  //   Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
+  //   Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+  //
+  // ]);
 
   animate();
 
@@ -56,4 +61,11 @@ function animate(){
   context.lineWidth = 1;
   context.strokeStyle = '#999';
   context.stroke();
+}
+
+function loadBoxes(){
+
+  var boxA = box.run();
+  World.add(engine.world, [boxA]);
+
 }
