@@ -1,20 +1,37 @@
-function Box(x, y, width, height){
+function Box(x, y, width, height, static){
+  this.isStatic = static;
 
-  this.x = x;
-  this.y = y;
   this.width = width;
   this.height = height;
+  this.box = Bodies.rectangle(x, y, width, height, { isStatic: static });
 
-  this.render = function(body){
+  this.render = function(){
 
-    context.save();
-    context.translate(this.x, this.y);
-    context.rotate(this.angle - Math.PI/2);
+    if(!this.isStatic){
+      //position is a property of all matter.js bodies
 
-    context.beginPath();
-    context.rect(this.x, this.y, this.width, this.height);
+      context.save();
+      context.translate(this.box.position.x, this.box.position.y);
+      var direction = this.box.angle;
+      context.rotate(direction);
+      context.rect(-.5*this.width, -.5*this.height, this.width, this.height);
+      context.restore();
 
-    context.restore();
+    }
+  }
+
+  this.render2 = function(){
+    for (var i = 0; i < bodies.length; i += 1) {
+       var vertices = bodies[i].vertices;
+
+       context.moveTo(vertices[0].x, vertices[0].y);
+
+       for (var j = 1; j < vertices.length; j += 1) {
+           context.lineTo(vertices[j].x, vertices[j].y);
+       }
+
+       context.lineTo(vertices[0].x, vertices[0].y);
+   }
   }
 
 }

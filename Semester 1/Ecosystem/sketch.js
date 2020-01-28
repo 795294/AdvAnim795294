@@ -70,6 +70,7 @@ function setup(){
   context = canvas.getContext("2d");
 
   canvas.style.border = 'solid black 2px';
+
   canvas.style.backgroundColor = 'rgba(0,0,0,1)';
 
   miniCanvas = document.getElementById("minimap");
