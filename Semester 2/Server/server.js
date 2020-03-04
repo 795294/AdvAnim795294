@@ -11,22 +11,22 @@ const wss = expressWs(express());
 let app = wss.app;
 
 let data = {
-    type: "msg return",
-    msg: "Hello client!",
+    type: "return msg",
+    msg: "Hello client",
 }
 
 //callback functions for application
-app.get('/ws', function (ws, req) {
+app.ws('/ws', function (ws, req) {
     //upon receiving a message, parse it, check it, and log it
-    ws.onmessage = function (event) {
+    ws.on("message", function (event) {
         let tempData = JSON.parse(event);
         switch (tempData.type) {
             case "message":
-                console.log("Message: '" + tempData.msg + "' received.");
+                console.log("Message: '" + tempData["msg"] + "' received.");
                 ws.send(JSON.stringify(data));
             break;
         }
-    }
+    });
 });
 
 //open server with express module application

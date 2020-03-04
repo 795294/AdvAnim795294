@@ -1,21 +1,30 @@
 addEventListener("load", setup);
 
-let messenger;
-var context,
-    canvas;
+var messenger;
+
+var canvas,
+    context;
 
 function setup() {
     canvas = document.getElementById("cnv");
-    canvas.width = window.innerWidth - 20;
-    canvas.height = window.innerHeight - 20;
-    canvas.style.backgroundColor = "rgb(135,206,250)";
+
+    canvas.width = 800;
+    canvas.height = 600;
 
     context = canvas.getContext("2d");
 
+    canvas.style.border = 'solid black 2px';
+
+    canvas.style.backgroundColor = 'rgb(255,255,255)';
+
     messenger = new Client("Hello server!");
+
+    draw();
 }
 
-function render() {
-    window.requestAnimationFrame(render);
+function draw() {
+    requestAnimationFrame(draw);
+
     context.clearRect(0, 0, canvas.width, canvas.height);
+
 }

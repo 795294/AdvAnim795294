@@ -1,5 +1,5 @@
-class Client {
-    constructor(message) {
+function Client(message) {
+
         this.ws;
 
         this.data = {
@@ -7,7 +7,7 @@ class Client {
             msg: message,
         };
 
-        let url = "ws://localhost:8080";
+        let url = "ws://localhost:8080/ws";
 
         this.ws = new WebSocket(url);
 
@@ -17,7 +17,18 @@ class Client {
         }
 
         this.ws.onmessage = (event) => {
-            console.log("Message -- " + JSON.parse(event).msg + " -- received.");
+            console.log('Message "' + JSON.parse(event.data)["msg"] + '" received.');
+            this.printMessage("message");
         }
-    }
+
+        this.printMessage = function(message){
+
+            context.font = '50px serif';
+
+            context.fillStyle = "blue";
+
+            context.fillText(message, canvas.width/2, canvas.height/2);
+
+            console.log("print");
+        }
 }
