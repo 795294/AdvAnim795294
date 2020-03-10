@@ -18,12 +18,10 @@ function Polygon(x, y, sides, radius, color, static, density){
       context.strokeStyle = this.color;
       context.fillStyle = this.color;
 
-      this.poly.vertices;
-
       context.moveTo(this.poly.vertices[0].x, this.poly.vertices[0].y);
 
-         for (var j = 1; j < this.poly.vertices.length; j++) {
-             context.lineTo(this.poly.vertices[j].x, this.poly.vertices[j].y);
+         for (var i = 1; i < this.poly.vertices.length; i++) {
+             context.lineTo(this.poly.vertices[i].x, this.poly.vertices[i].y);
          }
 
       context.lineTo(this.poly.vertices[0].x, this.poly.vertices[0].y);

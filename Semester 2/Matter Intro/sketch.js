@@ -62,7 +62,8 @@ function setup(){
 
   ground = new Box(canvas.width/2, canvas.height - 120, canvas.width + 50, 240, 'rgb(0,0,255', true);
 
-  slingshot = new Slingshot(170, 430);
+  //includes projectile properties (x, y, sides, radius, color, static, density)
+  slingshot = new Slingshot(170, 430, 8, 20, 'rgb(0,0,255', false, 0.004);
 
   pyramid1 = new Pyramid(canvas.width/2 + 310, canvas.height - 500, 25, 40, 9, 10);
 
@@ -107,11 +108,6 @@ function render(){
   //calls run function from pyramids
   pyramid1.run();
 
-  //loop through rocks[] and draw each one
-  for(let i = 0; i < rocks.length; i++){
-    drawPolygon(rocks[i]);
-  }
-
   //draw line from anchor to rock connected to it
   context.beginPath();
   context.strokeStyle = "black 20px";
@@ -119,4 +115,11 @@ function render(){
   context.lineTo(rocks[rocks.length-1].position.x, rocks[rocks.length-1].position.y)
   context.stroke();
 
+}
+
+function loadRocks(){
+  //loop through rocks[] and draw each one
+  for(let i = 0; i < rocks.length; i++){
+    rocks[i].render();
+  }
 }
